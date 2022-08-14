@@ -1,7 +1,5 @@
-using CarPartsMarketplace.Core.Utilities.Security.Encyption;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CarPartsMarketplace.Tests.Core.Helpers;
 

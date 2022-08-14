@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using CarPartsMarketplace.Core.Aspects.Autofac.Exception;
-using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
 using Castle.DynamicProxy;
 

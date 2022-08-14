@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarPartsMarketplace.Data.Context.EntityFramework;
+﻿using CarPartsMarketplace.Data.Context.EntityFramework;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 
 namespace CarPartsMarketplace.Data.Repositories.UnitOfWork.Concrete

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarPartsMarketplace.Entities;
+﻿using CarPartsMarketplace.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarPartsMarketplace.Data.Context.EntityFramework

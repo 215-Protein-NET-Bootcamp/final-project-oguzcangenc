@@ -13,10 +13,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.6" />
+    <PackageReference Include="Serilog" Version="2.11.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarPartsMarketplace.Business\CarPartsMarketplace.Business.csproj" />
     <ProjectReference Include="..\CarPartsMarketplace.Core\CarPartsMarketplace.Core.csproj" />
     <ProjectReference Include="..\CarPartsMarketplace.Data\CarPartsMarketplace.Data.csproj" />
   </ItemGroup>

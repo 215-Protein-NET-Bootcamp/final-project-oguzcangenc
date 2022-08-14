@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarPartsMarketplace.Core.Constants;
+﻿using CarPartsMarketplace.Core.Constants;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Validation;
 using CarPartsMarketplace.Core.Utilities.Interceptors;
 using Castle.DynamicProxy;
