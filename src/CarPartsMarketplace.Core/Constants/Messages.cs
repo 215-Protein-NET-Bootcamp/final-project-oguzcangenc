@@ -6,5 +6,6 @@
         public static string PAGINATION_RECORD_LISTED = "Sayfalama Kayıtları Listelendi";
         public static string WrongLoggerType = "Wrong logger type";
         public static string? WrongValidationType = "Bu bir doğrualama sınıfı değildir.";
+        public static string? FileLogConfigurationNotFound = "Loglama Dizini Bulunamadı";
     }
 }

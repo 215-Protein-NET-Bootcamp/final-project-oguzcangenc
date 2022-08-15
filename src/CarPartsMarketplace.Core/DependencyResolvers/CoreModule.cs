@@ -19,6 +19,7 @@ namespace CarPartsMarketplace.Core.DependencyResolvers
             services.AddSingleton<ICacheManager, MemoryCacheManager>();
             services.AddTransient<FileLogger>();
             services.AddSingleton<Stopwatch>();
+
         }
     }
 }

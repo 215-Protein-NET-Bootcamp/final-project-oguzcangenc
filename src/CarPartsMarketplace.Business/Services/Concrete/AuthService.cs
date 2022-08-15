@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
-using CarPartsMarketplace.Core.Entities;
+using CarPartsMarketplace.Business.Validation.FluentValidation;
+using CarPartsMarketplace.Core.Aspects.Autofac.Logging;
+using CarPartsMarketplace.Core.Aspects.Autofac.Performance;
+using CarPartsMarketplace.Core.Aspects.Autofac.Validation;
+using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
 using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Core.Utilities.Security.Hashing;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
@@ -64,7 +68,14 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             }
             return new SuccessResult(Messages.USER_NOTFOUND);
         }
-
+        /// <summary>
+        /// Login User Service
+        /// </summary>
+        /// <param name="userForLoginDto"></param>
+        /// <returns></returns>
+        [LogAspect(typeof(FileLogger))]
+        [ValidationAspect(typeof(UserForLoginDtoValidator))]
+        [PerformanceAspect(2)]
         public async Task<IDataResult<AccessToken>> Login(UserLoginDto userForLoginDto)
         {
             var userToCheck = await _applicationUserService.GetByMail(userForLoginDto.Email);
@@ -73,6 +84,11 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 return new ErrorDataResult<AccessToken>(Messages.USER_NOTFOUND);
             }
 
+            if (!userToCheck.Data.EmailConfirmation)
+            {
+                return new ErrorDataResult<AccessToken>(Messages.EMAIL_NOT_CONFIRMED);
+
+            }
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
             {
                 return new ErrorDataResult<AccessToken>(Messages.PASSWORD_INCORRECT);
@@ -85,6 +101,13 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             return new ErrorDataResult<AccessToken>(Messages.SYSTEM_ERROR);
 
         }
+        /// <summary>
+        /// Register Service
+        /// </summary>
+        /// <param name="userForRegisterDto"></param>
+        /// <returns></returns>
+        [LogAspect(typeof(FileLogger))]
+        [ValidationAspect(typeof(UserForRegisterDtoValidator))]
         public async Task<IDataResult<ApplicationUserDto>> Register(UserForRegisterDto userForRegisterDto)
         {
             var userExist = await UserExists(userForRegisterDto.Email);
@@ -95,7 +118,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 user.LastActivity = DateTime.UtcNow;
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
-                user.CreatedAt = 1;
+                user.EmailConfirmation = false;
                 user.ModifiedDate = DateTime.UtcNow;
                 await _applicationUserService.AddAsync(user);
                 return new SuccessDataResult<ApplicationUserDto>(_mapper.Map<ApplicationUserDto>(user), Messages.REGISTER_USER);

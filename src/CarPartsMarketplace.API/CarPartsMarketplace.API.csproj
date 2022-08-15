@@ -24,4 +24,8 @@
     <ProjectReference Include="..\CarPartsMarketplace.Data\CarPartsMarketplace.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="logs\" />
+  </ItemGroup>
+
 </Project>

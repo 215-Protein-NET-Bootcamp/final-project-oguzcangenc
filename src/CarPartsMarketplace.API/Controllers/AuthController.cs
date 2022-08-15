@@ -4,6 +4,7 @@ using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using CarPartsMarketplace.Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using IResult = CarPartsMarketplace.Core.Utilities.Results.IResult;
 
 
 namespace CarPartsMarketplace.API.Controllers
@@ -18,8 +19,17 @@ namespace CarPartsMarketplace.API.Controllers
         {
             _authService = authService;
         }
+
+        /// <summary>
+        /// Login Endpoint
+        /// </summary>
+        /// <param name="userForLoginDto"></param>
+        /// <returns></returns>
         [AllowAnonymous]
+        [Consumes("application/json")]
+        [Produces("application/json", "text/plain")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IDataResult<AccessToken>))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(string))]
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDto userForLoginDto)
         {
@@ -30,7 +40,16 @@ namespace CarPartsMarketplace.API.Controllers
             }
             return BadRequest(userToLogin);
         }
-
+        /// <summary>
+        /// Register Endpoint
+        /// </summary>
+        /// <param name="userForRegisterDto"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [Consumes("application/json")]
+        [Produces("application/json", "text/plain")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IResult))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(IResult))]
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
@@ -41,5 +60,7 @@ namespace CarPartsMarketplace.API.Controllers
             }
             return BadRequest(registerResult);
         }
+
+       
     }
 }

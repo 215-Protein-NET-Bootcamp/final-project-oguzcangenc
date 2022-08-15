@@ -1,4 +1,6 @@
-﻿namespace CarPartsMarketplace.Business.Constant
+﻿using CarPartsMarketplace.Core.Utilities.Security.Jwt;
+
+namespace CarPartsMarketplace.Business.Constant
 {
     public static class Messages
     {
@@ -29,5 +31,6 @@
         public static string RECORD_DELETED = "Kayıt Silindi";
         public static string RECORD_UPDATED = "Kayıt Güncellendi";
         public static string ID_EXISTENT = "Bu Kayıt Zaten Mevcut Veya Kayıtlı";
+        public static string EMAIL_NOT_CONFIRMED = "Email Adresi Onaylanmadı";
     }
 }

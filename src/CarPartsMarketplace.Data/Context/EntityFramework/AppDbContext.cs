@@ -10,7 +10,7 @@ namespace CarPartsMarketplace.Data.Context.EntityFramework
 
         }
 
-        DbSet<ApplicationUser> Users { get; set; }
+        DbSet<ApplicationUser> ApplicationUsers { get; set; }
         
     }
 }
