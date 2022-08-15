@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using CarPartsMarketplace.Business.Adapters.EmailService.Abstract;
+using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
+using CarPartsMarketplace.Business.BackgroundJobs;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
 using CarPartsMarketplace.Business.Validation.FluentValidation;
@@ -12,6 +15,7 @@ using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 using CarPartsMarketplace.Entities;
 using CarPartsMarketplace.Entities.Dtos;
+using Hangfire;
 
 namespace CarPartsMarketplace.Business.Services.Concrete
 {
@@ -21,15 +25,16 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         private readonly IMapper _mapper;
         private readonly IUserService _applicationUserService;
         private readonly IUnitOfWork _unitOfWork;
-
-
-        public AuthService(IUserService applicationUserService, ITokenHelper tokenHelper, IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IBackgroundJobClient _backgroundJobClient;
+        public AuthService(IUserService applicationUserService, ITokenHelper tokenHelper, IMapper mapper, IUnitOfWork unitOfWork, IMailService mailService, IBackgroundJobClient backgroundJobClient, ISendMailJob sendMailJob)
         {
             _applicationUserService = applicationUserService;
             _tokenHelper = tokenHelper;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _backgroundJobClient = backgroundJobClient;
         }
+
         public async Task<IResult> ChangePassword(string oldPassword, string newPassword, string confirmNewPassword, int userId)
         {
             var user = (await _applicationUserService.GetById(userId)).Data;
@@ -86,8 +91,8 @@ namespace CarPartsMarketplace.Business.Services.Concrete
 
             if (!userToCheck.Data.EmailConfirmation)
             {
+                _backgroundJobClient.Enqueue<ISendMailJob>(job => job.SendMail(new MailRequest() { Body = "dENEME Body", Subject = "dENEME Subject", ToEmail = "oguzcangencc@hotmail.com" }));
                 return new ErrorDataResult<AccessToken>(Messages.EMAIL_NOT_CONFIRMED);
-
             }
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
             {
