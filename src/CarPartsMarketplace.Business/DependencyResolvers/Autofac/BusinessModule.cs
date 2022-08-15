@@ -1,22 +1,16 @@
-﻿using System.Diagnostics;
-using Autofac.Extras.DynamicProxy;
+﻿using Autofac.Extras.DynamicProxy;
 using Autofac;
 using CarPartsMarketplace.Business.Adapters.EmailService.Abstract;
 using CarPartsMarketplace.Business.Adapters.EmailService.Concrete;
 using CarPartsMarketplace.Business.BackgroundJobs;
 using CarPartsMarketplace.Business.Services.Abstract;
 using CarPartsMarketplace.Business.Services.Concrete;
-using CarPartsMarketplace.Core.CrossCuttingConcerns.Caching;
-using CarPartsMarketplace.Core.CrossCuttingConcerns.Caching.Microsoft;
 using CarPartsMarketplace.Core.Utilities.Interceptors;
 using CarPartsMarketplace.Data.Repositories.Abstract;
 using CarPartsMarketplace.Data.Repositories.Concrete;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Concrete;
 using Castle.DynamicProxy;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
 {

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using CarPartsMarketplace.Business.Adapters.EmailService.Abstract;
+﻿using CarPartsMarketplace.Business.Adapters.EmailService.Abstract;
 using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
 
 namespace CarPartsMarketplace.Business.BackgroundJobs
 {
-    public class SendMailJob:ISendMailJob
+    public class SendMailJob : ISendMailJob
     {
         private readonly IMailService _mailService;
 
@@ -19,15 +13,7 @@ namespace CarPartsMarketplace.Business.BackgroundJobs
         }
         public async Task SendMail(MailRequest mailRequest)
         {
-            try
-            {
-                await _mailService.SendEmailAsync(mailRequest);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException("This job will never succeed.");
-
-            }
+            await _mailService.SendEmailAsync(mailRequest);
         }
     }
 }

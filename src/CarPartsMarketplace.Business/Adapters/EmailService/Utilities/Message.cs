@@ -1,6 +1,4 @@
-﻿using MailKit.Net.Smtp;
-using Microsoft.AspNetCore.Http;
-using MimeKit;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace CarPartsMarketplace.Business.Adapters.EmailService.Utilities
 {

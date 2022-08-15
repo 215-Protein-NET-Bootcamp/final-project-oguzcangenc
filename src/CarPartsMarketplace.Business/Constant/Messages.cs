@@ -1,6 +1,4 @@
-﻿using CarPartsMarketplace.Core.Utilities.Security.Jwt;
-
-namespace CarPartsMarketplace.Business.Constant
+﻿namespace CarPartsMarketplace.Business.Constant
 {
     public static class Messages
     {
@@ -15,7 +13,7 @@ namespace CarPartsMarketplace.Business.Constant
         public static string PASSWORD_INCORRECT = "Şifre Hatalı";
         public static string LOGIN_SUCCESS = "Giriş Başarılı";
         public static string SYSTEM_ERROR = "Sistem Hatası";
-        public static string REGISTER_USER = "Kullanıcı Kayıt Oldu";
+        public static string REGISTER_USER_SUCCESSFULY = "Kullanıcı Kayıt Oldu";
         public static string USER_ALREADY_EXISTS = "Kullanıcı Zaten Mevcut";
         public static string SUCCESS_TRANSACTION = "İşlem Başarılı";
         public static string PERSON_ADDED = "Kişi Eklendi";
@@ -31,6 +29,8 @@ namespace CarPartsMarketplace.Business.Constant
         public static string RECORD_DELETED = "Kayıt Silindi";
         public static string RECORD_UPDATED = "Kayıt Güncellendi";
         public static string ID_EXISTENT = "Bu Kayıt Zaten Mevcut Veya Kayıtlı";
-        public static string EMAIL_NOT_CONFIRMED = "Email Adresi Onaylanmadı";
+        public static string EMAIL_NOT_CONFIRMED = "Email Adresi Doğrulama Başarısız";
+        public static string PASSWORD_NOT_MATCH_REGEX = "Parolada en az 8 karakter en fazla 20 karakter, bir küçük harf ve bir büyük harf ve özel karakter olmalıdır.";
+        public static string EMAIL_CONFIRMED = "E-Posta Adresi Başarıyla Doğrulandı. Sisteme Giriş Yapabilirsiniz.";
     }
 }

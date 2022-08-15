@@ -1,8 +1,7 @@
+using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
-using Serilog;
-using CarPartsMarketplace.API.Extensions.StartupExtension;
 using CarPartsMarketplace.API.Middleware;
 using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
 using CarPartsMarketplace.Business.DependencyResolvers.Autofac;
@@ -50,7 +49,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 ServiceTool.ServiceProvider = builder.Services.BuildServiceProvider();

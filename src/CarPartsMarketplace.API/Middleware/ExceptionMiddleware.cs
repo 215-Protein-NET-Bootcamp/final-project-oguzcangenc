@@ -1,10 +1,7 @@
 ﻿using System.Net;
 using System.Security;
-using System.Text.Json;
 using CarPartsMarketplace.Core.Constants;
-using CarPartsMarketplace.Core.Utilities.Results;
 using FluentValidation;
-using Serilog;
 
 namespace CarPartsMarketplace.API.Middleware
 {

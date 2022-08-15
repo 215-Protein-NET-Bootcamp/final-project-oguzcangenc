@@ -7,6 +7,7 @@ using CarPartsMarketplace.Core.Utilities.Interceptors;
 using Castle.DynamicProxy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace CarPartsMarketplace.Core.Aspects.Autofac.Logging
 {
@@ -52,7 +53,7 @@ namespace CarPartsMarketplace.Core.Aspects.Autofac.Logging
                     ? "?"
                     : _httpContextAccessor.HttpContext.User.Identity.Name
             };
-            return JsonSerializer.Serialize(logDetail);
+            return JsonConvert.SerializeObject(logDetail);
         }
     }
 }
