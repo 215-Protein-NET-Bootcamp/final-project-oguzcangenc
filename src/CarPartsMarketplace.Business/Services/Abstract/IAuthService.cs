@@ -7,9 +7,9 @@ namespace CarPartsMarketplace.Business.Services.Abstract
 {
     public interface IAuthService
     {
-        Task<IDataResult<ApplicationUserDto>> Register(UserForRegisterDto userForRegisterDto,HostString host);
+        Task<IDataResult<ApplicationUserDto>> Register(UserForRegisterDto userForRegisterDto, HostString host);
         Task<IResult> EmailConfirmation(UserEmailConfirmationDto userEmailConfirmationDto);
         Task<IDataResult<AccessToken>> Login(UserLoginDto userForLoginDto);
-
+        Task<IResult> AccountActivation(AccountActivationDto email);
     }
 }

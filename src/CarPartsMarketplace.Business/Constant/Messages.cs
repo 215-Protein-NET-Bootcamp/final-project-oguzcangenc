@@ -1,4 +1,6 @@
-﻿namespace CarPartsMarketplace.Business.Constant
+﻿using CarPartsMarketplace.Core.Utilities.Security.Jwt;
+
+namespace CarPartsMarketplace.Business.Constant
 {
     public static class Messages
     {
@@ -32,5 +34,9 @@
         public static string EMAIL_NOT_CONFIRMED = "Email Adresi Doğrulama Başarısız";
         public static string PASSWORD_NOT_MATCH_REGEX = "Parolada en az 8 karakter en fazla 20 karakter, bir küçük harf ve bir büyük harf ve özel karakter olmalıdır.";
         public static string EMAIL_CONFIRMED = "E-Posta Adresi Başarıyla Doğrulandı. Sisteme Giriş Yapabilirsiniz.";
+        public static string EMAIL_ALREADY_CONFIRMED = "E-Posta Zaten Doğrulanmış.";
+        public static string USER_LOCKED = "Hesabınız 10 Süre İle Dakika Kilitlendi";
+        public static string ACCOUNT_ALREADY_ACTIVE = "Bu Hesap Zaten Aktif";
+        public static string ACCOUNT_ACTIVATED = "Hesap Aktif Edildi";
     }
 }

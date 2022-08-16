@@ -1,7 +1,7 @@
 ﻿using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
 using Hangfire;
 
-namespace CarPartsMarketplace.Business.BackgroundJobs
+namespace CarPartsMarketplace.Business.BackgroundJobs.Abstract
 {
     public interface ISendMailJob
     {

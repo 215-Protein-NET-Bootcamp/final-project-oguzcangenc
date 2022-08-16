@@ -2,7 +2,6 @@
 using Autofac;
 using CarPartsMarketplace.Business.Adapters.EmailService.Abstract;
 using CarPartsMarketplace.Business.Adapters.EmailService.Concrete;
-using CarPartsMarketplace.Business.BackgroundJobs;
 using CarPartsMarketplace.Business.Services.Abstract;
 using CarPartsMarketplace.Business.Services.Concrete;
 using CarPartsMarketplace.Core.Utilities.Interceptors;
@@ -11,6 +10,9 @@ using CarPartsMarketplace.Data.Repositories.Concrete;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Concrete;
 using Castle.DynamicProxy;
+using CarPartsMarketplace.Business.BackgroundJobs.Abstract;
+using CarPartsMarketplace.Business.BackgroundJobs.Concrete;
+using CarPartsMarketplace.Business.BackgroundJobs.Manager;
 
 namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
 {
@@ -24,6 +26,7 @@ namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             builder.RegisterType<MailService>().As<IMailService>().InstancePerDependency();
             builder.RegisterType<SendMailJob>().As<ISendMailJob>().InstancePerLifetimeScope();
+            builder.RegisterType<JobManager>().As<IJobManager>().InstancePerLifetimeScope();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

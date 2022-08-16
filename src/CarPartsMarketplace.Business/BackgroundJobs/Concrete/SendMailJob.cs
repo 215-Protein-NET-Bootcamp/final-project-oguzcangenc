@@ -1,7 +1,8 @@
 ﻿using CarPartsMarketplace.Business.Adapters.EmailService.Abstract;
 using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
+using CarPartsMarketplace.Business.BackgroundJobs.Abstract;
 
-namespace CarPartsMarketplace.Business.BackgroundJobs
+namespace CarPartsMarketplace.Business.BackgroundJobs.Concrete
 {
     public class SendMailJob : ISendMailJob
     {

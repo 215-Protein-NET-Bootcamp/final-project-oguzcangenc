@@ -79,5 +79,21 @@ namespace CarPartsMarketplace.API.Controllers
             }
             return BadRequest(registerResult);
         }
+        /// <summary>
+        /// Account Activation Endpoint
+        /// </summary>
+        /// <param name="confirmationDto"></param>
+        /// <returns></returns>
+        ///
+        [HttpGet("account-activation")]
+        public async Task<IActionResult> AccountActivation([FromQuery] AccountActivationDto accountActivationDto)
+        {
+            var registerResult = await _authService.AccountActivation(accountActivationDto);
+            if (registerResult.Success)
+            {
+                return Ok(registerResult);
+            }
+            return BadRequest(registerResult);
+        }
     }
 }

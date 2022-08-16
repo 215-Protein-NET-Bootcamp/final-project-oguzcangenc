@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
+using CarPartsMarketplace.Business.BackgroundJobs.Abstract;
+using CarPartsMarketplace.Core.Utilities.Security.Hashing;
+using CarPartsMarketplace.Core.Utilities.Security.Jwt;
+using CarPartsMarketplace.Entities.Dtos;
+using Hangfire;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+
+namespace CarPartsMarketplace.Business.BackgroundJobs.Manager
+{
+    public class JobManager : IJobManager
+    {
+        private readonly IOptions<TokenOptions> _tokenOptions;
+        private readonly IBackgroundJobClient _backgroundJobClient;
+        public JobManager(IBackgroundJobClient backgroundJobClient, IOptions<TokenOptions> tokenOptions)
+        {
+            _backgroundJobClient = backgroundJobClient;
+            _tokenOptions = tokenOptions;
+        }
+        public async Task RegisterUserWelcomeMailJobAsync(RegisterUserWelcomeMailJobDto jobDto, HostString host)
+        {
+            HashingHelper.MD5Hash(jobDto.Email, out string emailMd5, _tokenOptions);
+            _backgroundJobClient.Enqueue<ISendMailJob>(job => job.SendMail(new MailRequest()
+            {
+                Body =
+                    $"Sayın {jobDto.FirstName} {jobDto.LastName}  Car Parts Marketplace'e Hoşgeldiniz. Hesabınızı Doğrulamak için linke tıklayınız. \n" +
+                    $"<a href='{"https://" + host + "/api/auth/emailconfirmation?EmailHash=" + emailMd5 + "&Email=" + jobDto.Email}'>Doğrulama Linki</a>",
+                Subject = "Car Parts Marketplace Hoşgeldiniz.",
+                ToEmail = jobDto.Email
+            }));
+        }
+
+        public async Task AccountLocoutInformaitonMailJob(string email)
+        {
+            _backgroundJobClient.Enqueue<ISendMailJob>(job => job.SendMail(new MailRequest()
+            {
+                Body = "Hesabınıza bir kaç kez giriş yapıldı ve başarısız oldu. Hesabınız güvenlik açısıyla kilitlendi. Lütfen hesabınızı müşteri hizmetleri ile iletişime geçerek aktive ediniz.",
+                Subject = "Hesabınız Kilitlendi - Car Parts Marketplace",
+                ToEmail = email
+            }));
+        }
+
+        public async Task AccountActivationMailJob(string email)
+        {
+            _backgroundJobClient.Enqueue<ISendMailJob>(job => job.SendMail(new MailRequest()
+            {
+                Body = "Hesabınız tekrardan aktifleştirildi. İyi alışverişler dileriz.",
+                Subject = "Hesabınız Aktifleştirildi - Car Parts Marketplace",
+                ToEmail = email
+            }));
+        }
+    }
+}
