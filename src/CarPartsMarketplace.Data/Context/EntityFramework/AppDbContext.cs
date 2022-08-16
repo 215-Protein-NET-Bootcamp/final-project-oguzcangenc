@@ -10,6 +10,17 @@ namespace CarPartsMarketplace.Data.Context.EntityFramework
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
+
+
         DbSet<ApplicationUser> ApplicationUsers { get; set; }
         DbSet<Brand> Brands { get; set; }
         DbSet<Color> Colors { get; set; }

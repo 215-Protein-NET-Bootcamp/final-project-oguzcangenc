@@ -2,12 +2,10 @@
 
 namespace CarPartsMarketplace.Entities
 {
-    public class ApplicationUser : User, IEntity
+    public class ApplicationUser : User
     {
         public bool EmailConfirmation { get; set; }
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
-
-
     }
 }
