@@ -1,7 +1,6 @@
 ﻿using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using CarPartsMarketplace.Entities.Dtos;
-using Microsoft.AspNetCore.Http;
 
 namespace CarPartsMarketplace.Business.Services.Abstract
 {

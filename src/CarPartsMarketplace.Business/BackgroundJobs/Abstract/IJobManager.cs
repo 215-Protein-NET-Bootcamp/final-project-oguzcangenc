@@ -1,5 +1,4 @@
 ﻿using CarPartsMarketplace.Entities.Dtos;
-using Microsoft.AspNetCore.Http;
 
 namespace CarPartsMarketplace.Business.BackgroundJobs.Abstract
 {

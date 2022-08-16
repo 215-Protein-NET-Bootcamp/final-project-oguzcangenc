@@ -4,7 +4,6 @@ using CarPartsMarketplace.Core.Utilities.Security.Hashing;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using CarPartsMarketplace.Entities.Dtos;
 using Hangfire;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace CarPartsMarketplace.Business.BackgroundJobs.Manager
