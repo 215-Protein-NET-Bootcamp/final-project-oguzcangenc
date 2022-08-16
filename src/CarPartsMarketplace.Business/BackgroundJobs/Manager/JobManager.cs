@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
+﻿using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
 using CarPartsMarketplace.Business.BackgroundJobs.Abstract;
 using CarPartsMarketplace.Core.Utilities.Security.Hashing;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
@@ -23,14 +18,14 @@ namespace CarPartsMarketplace.Business.BackgroundJobs.Manager
             _backgroundJobClient = backgroundJobClient;
             _tokenOptions = tokenOptions;
         }
-        public async Task RegisterUserWelcomeMailJobAsync(RegisterUserWelcomeMailJobDto jobDto, HostString host)
+        public async Task RegisterUserActivationMailJobAsync(RegisterUserWelcomeMailJobDto jobDto, string host)
         {
             HashingHelper.MD5Hash(jobDto.Email, out string emailMd5, _tokenOptions);
             _backgroundJobClient.Enqueue<ISendMailJob>(job => job.SendMail(new MailRequest()
             {
                 Body =
                     $"Sayın {jobDto.FirstName} {jobDto.LastName}  Car Parts Marketplace'e Hoşgeldiniz. Hesabınızı Doğrulamak için linke tıklayınız. \n" +
-                    $"<a href='{"https://" + host + "/api/auth/emailconfirmation?EmailHash=" + emailMd5 + "&Email=" + jobDto.Email}'>Doğrulama Linki</a>",
+                    $"<a href='{"https://" + host + "/api/auth/email-confirmation?EmailHash=" + emailMd5 + "&Email=" + jobDto.Email}'>Doğrulama Linki</a>",
                 Subject = "Car Parts Marketplace Hoşgeldiniz.",
                 ToEmail = jobDto.Email
             }));
@@ -46,7 +41,7 @@ namespace CarPartsMarketplace.Business.BackgroundJobs.Manager
             }));
         }
 
-        public async Task AccountActivationMailJob(string email)
+        public async Task AccountLocoutActivationMailJob(string email)
         {
             _backgroundJobClient.Enqueue<ISendMailJob>(job => job.SendMail(new MailRequest()
             {

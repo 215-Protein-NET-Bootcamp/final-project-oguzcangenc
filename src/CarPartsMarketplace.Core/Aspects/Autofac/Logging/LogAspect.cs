@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using CarPartsMarketplace.Core.Constants;
+﻿using CarPartsMarketplace.Core.Constants;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
 using CarPartsMarketplace.Core.DependencyResolvers;

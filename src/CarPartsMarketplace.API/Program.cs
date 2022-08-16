@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
+using CarPartsMarketplace.API.Extensions.StartupExtension;
 using CarPartsMarketplace.API.Middleware;
 using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
 using CarPartsMarketplace.Business.DependencyResolvers.Autofac;
@@ -22,16 +23,17 @@ builder.Services.AddHangfire(x =>
 
     }
 );
+
 builder.Services.AddHangfireServer();
+builder.Host.UseSerilogExtension();
+builder.Services.AddCustomSwaggerExtension();
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 var coreModule = new CoreModule();
 builder.Host.ConfigureContainer<ContainerBuilder>(b =>
 {
     b.RegisterModule(new BusinessModule());
 });
-
 builder.Services.AddDependencyResolvers(builder.Configuration, new ICoreModule[] { coreModule });
-//Very Important Code Here
 builder.Services.Configure<FileLogConfiguration>(builder.Configuration.GetSection("FileLogConfiguration"));
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
@@ -43,33 +45,39 @@ var mapperConfig = new MapperConfiguration(cfg =>
 });
 builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
-
 builder.Services.AddSingleton(mapperConfig.CreateMapper());
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 ServiceTool.ServiceProvider = builder.Services.BuildServiceProvider();
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(opt =>
-    {
-        //Hide Schemas
-        opt.DefaultModelsExpandDepth(-1);
-    });
+   
 }
-
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dataContext.Database.Migrate();
+}
+app.UseSwagger();
+app.UseSwaggerUI(opt =>
+{
+    //Hide Schemas
+    opt.DefaultModelsExpandDepth(-1);
+});
 app.UseCors("corsapp");
 app.UseHttpsRedirection();
-app.UseHangfireServer();
-app.UseHangfireDashboard();
+var options = new DashboardOptions()
+{
+    Authorization = new[] { new HangfireAuthorizationFilter() }
+};
+app.UseHangfireDashboard("/hangfire-server", options);
+
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthorization();
 

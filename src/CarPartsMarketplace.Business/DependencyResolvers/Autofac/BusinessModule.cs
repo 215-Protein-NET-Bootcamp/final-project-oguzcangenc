@@ -13,6 +13,7 @@ using Castle.DynamicProxy;
 using CarPartsMarketplace.Business.BackgroundJobs.Abstract;
 using CarPartsMarketplace.Business.BackgroundJobs.Concrete;
 using CarPartsMarketplace.Business.BackgroundJobs.Manager;
+using Microsoft.AspNetCore.Http;
 
 namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
 {
@@ -27,6 +28,7 @@ namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
             builder.RegisterType<MailService>().As<IMailService>().InstancePerDependency();
             builder.RegisterType<SendMailJob>().As<ISendMailJob>().InstancePerLifetimeScope();
             builder.RegisterType<JobManager>().As<IJobManager>().InstancePerLifetimeScope();
+            builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

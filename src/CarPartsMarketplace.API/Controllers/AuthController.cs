@@ -3,7 +3,6 @@ using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using CarPartsMarketplace.Entities.Dtos;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using IResult = CarPartsMarketplace.Core.Utilities.Results.IResult;
 
@@ -56,7 +55,7 @@ namespace CarPartsMarketplace.API.Controllers
         {
 
             var host = HttpContext.Request.Host;
-            var registerResult = await _authService.Register(userForRegisterDto, host);
+            var registerResult = await _authService.Register(userForRegisterDto);
             if (registerResult.Success)
             {
                 return Ok(registerResult);
@@ -69,7 +68,7 @@ namespace CarPartsMarketplace.API.Controllers
         /// <param name="confirmationDto"></param>
         /// <returns></returns>
         ///
-        [HttpGet("emailconfirmation")]
+        [HttpGet("email-confirmation")]
         public async Task<IActionResult> EmailConfirmation([FromQuery]UserEmailConfirmationDto confirmationDto)
         {            
             var registerResult = await _authService.EmailConfirmation(confirmationDto);

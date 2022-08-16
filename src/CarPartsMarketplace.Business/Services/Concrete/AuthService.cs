@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
 using CarPartsMarketplace.Business.BackgroundJobs.Abstract;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
@@ -14,7 +13,6 @@ using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 using CarPartsMarketplace.Entities;
 using CarPartsMarketplace.Entities.Dtos;
-using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
@@ -28,12 +26,13 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         private readonly IUserService _applicationUserService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJobManager _jobManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public AuthService(IUserService applicationUserService,
             ITokenHelper tokenHelper,
             IMapper mapper,
             IUnitOfWork unitOfWork,
-            IBackgroundJobClient backgroundJobClient,
-            IOptions<TokenOptions> tokenOptions, IJobManager jobManager)
+            IOptions<TokenOptions> tokenOptions, IJobManager jobManager,
+            IHttpContextAccessor httpContextAccessor)
         {
             _applicationUserService = applicationUserService;
             _tokenHelper = tokenHelper;
@@ -41,6 +40,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             _unitOfWork = unitOfWork;
             _tokenOptions = tokenOptions;
             _jobManager = jobManager;
+            _httpContextAccessor = httpContextAccessor;
         }
         public IDataResult<AccessToken> CreateAccessToken(ApplicationUser user)
         {
@@ -71,13 +71,22 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         {
             var userToCheck = await _applicationUserService.GetByMail(userForLoginDto.Email);
 
-
             if (!userToCheck.Success)
                 return new ErrorDataResult<AccessToken>(Messages.USER_NOTFOUND);
 
+            var user = userToCheck.Data;
 
-            if (!userToCheck.Data.EmailConfirmation)
+            if (!user.EmailConfirmation)
+            {
+                await _jobManager.RegisterUserActivationMailJobAsync(new RegisterUserWelcomeMailJobDto()
+                {
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                }, _httpContextAccessor.HttpContext.Request.Host.Value);
                 return new ErrorDataResult<AccessToken>(Messages.EMAIL_NOT_CONFIRMED);
+            }
+
 
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
@@ -133,7 +142,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             user.Data.LockoutEnabled = false;
             _applicationUserService.Update(user.Data);
             await _unitOfWork.CompleteAsync();
-            await _jobManager.AccountActivationMailJob(accountActivationDto.Email);
+            await _jobManager.AccountLocoutActivationMailJob(accountActivationDto.Email);
             return new SuccessResult(Messages.ACCOUNT_ACTIVATED);
         }
 
@@ -144,7 +153,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         /// <returns></returns>
         [LogAspect(typeof(FileLogger))]
         [ValidationAspect(typeof(UserForRegisterDtoValidator))]
-        public async Task<IDataResult<ApplicationUserDto>> Register(UserForRegisterDto userForRegisterDto, HostString host)
+        public async Task<IDataResult<ApplicationUserDto>> Register(UserForRegisterDto userForRegisterDto)
         {
             var userExist = await UserExists(userForRegisterDto.Email);
 
@@ -159,12 +168,12 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             user.EmailConfirmation = false;
             user.ModifiedDate = DateTime.UtcNow;
             await _applicationUserService.AddAsync(user);
-            await _jobManager.RegisterUserWelcomeMailJobAsync(new RegisterUserWelcomeMailJobDto()
+            await _jobManager.RegisterUserActivationMailJobAsync(new RegisterUserWelcomeMailJobDto()
             {
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName
-            }, host);
+            }, _httpContextAccessor.HttpContext.Request.Host.Value);
 
             return new SuccessDataResult<ApplicationUserDto>(_mapper.Map<ApplicationUserDto>(user),
                 Messages.REGISTER_USER_SUCCESSFULY);
