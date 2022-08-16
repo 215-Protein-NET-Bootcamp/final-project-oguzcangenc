@@ -18,6 +18,7 @@ namespace CarPartsMarketplace.Entities
         public virtual Brand Brand { get; set; }
         public virtual Color Color { get; set; }
         public virtual ICollection<Offer> Offers { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
     }
 }

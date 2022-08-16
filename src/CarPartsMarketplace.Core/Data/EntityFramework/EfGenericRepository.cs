@@ -43,7 +43,6 @@ namespace CarPartsMarketplace.Core.Data.EntityFramework
             _entities.Remove(entity);
         }
 
-
         public async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null)
         {
             return await (filter == null
