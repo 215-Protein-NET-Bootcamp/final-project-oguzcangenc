@@ -14,7 +14,7 @@ public class CacheRemoveAspect : MethodInterception
     public CacheRemoveAspect(string pattern)
     {
         _pattern = pattern;
-        _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();
+        _cacheManager = DependencyResolvers.ServiceTool.ServiceProvider.GetService<ICacheManager>();
     }
     protected override void OnSuccess(IInvocation invocation)
     {

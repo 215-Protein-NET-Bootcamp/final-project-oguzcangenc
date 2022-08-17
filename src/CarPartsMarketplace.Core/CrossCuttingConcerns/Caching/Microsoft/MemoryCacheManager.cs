@@ -11,7 +11,7 @@ namespace CarPartsMarketplace.Core.CrossCuttingConcerns.Caching.Microsoft
 
         public MemoryCacheManager(IMemoryCache memoryCache)
         {
-            _memoryCache = ServiceTool.ServiceProvider.GetService<IMemoryCache>();
+            _memoryCache = DependencyResolvers.ServiceTool.ServiceProvider.GetService<IMemoryCache>();
         }
         public void Add(string key, object value, int duration)
         {

@@ -13,7 +13,7 @@ public class FileLogger : LoggerServiceBase
     /// </summary>
     public FileLogger()
     {
-        var logConfig = ServiceTool.ServiceProvider.GetService<IOptions<FileLogConfiguration>>().Value ?? throw new Exception(Messages.FileLogConfigurationNotFound);
+        var logConfig = DependencyResolvers.ServiceTool.ServiceProvider.GetService<IOptions<FileLogConfiguration>>().Value ?? throw new Exception(Messages.FileLogConfigurationNotFound);
         var logFilePath = string.Format("{0}{1}", Directory.GetCurrentDirectory() + logConfig.FolderPath, ".txt");
         Logger = new LoggerConfiguration()
             .WriteTo.File(

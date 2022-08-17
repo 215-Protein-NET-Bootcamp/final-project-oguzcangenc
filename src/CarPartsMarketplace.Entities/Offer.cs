@@ -2,7 +2,7 @@
 
 namespace CarPartsMarketplace.Entities
 {
-    public class Offer : BaseEntity, IEntity
+    public class Offer : BaseEntity
     {
         public int ProductId { get; set; }
         public int UserId { get; set; }

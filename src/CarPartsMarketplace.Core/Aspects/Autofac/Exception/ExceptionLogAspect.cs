@@ -25,8 +25,8 @@ namespace CarPartsMarketplace.Core.Aspects.Autofac.Exception
                 throw new ArgumentException(Messages.WrongLoggerType);
             }
 
-            _loggerServiceBase = (LoggerServiceBase)ServiceTool.ServiceProvider.GetService(loggerService);
-            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+            _loggerServiceBase = (LoggerServiceBase)DependencyResolvers.ServiceTool.ServiceProvider.GetService(loggerService);
+            _httpContextAccessor = DependencyResolvers.ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
         }
 
         protected override void OnException(IInvocation invocation, System.Exception e)

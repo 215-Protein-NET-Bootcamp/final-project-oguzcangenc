@@ -5,11 +5,16 @@ using CarPartsMarketplace.Entities;
 
 namespace CarPartsMarketplace.Data.Repositories.Concrete
 {
-    public class UserRepository:EfGenericRepository<ApplicationUser,AppDbContext>,IUserRepository
+    public class UserRepository : EfGenericRepository<ApplicationUser, AppDbContext>, IUserRepository
     {
         public UserRepository(AppDbContext dbContext) : base(dbContext)
         {
-            
+
+        }
+
+        public override Task AddAsync(ApplicationUser entity)
+        {
+            return base.AddAsync(entity);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CarPartsMarketplace.Entities;
+﻿using CarPartsMarketplace.Core.Entities;
+using CarPartsMarketplace.Entities;
 using CarPartsMarketplace.Core.Utilities.Security.Hashing;
 using CarPartsMarketplace.Data.Context.EntityFramework;
 
@@ -17,6 +18,7 @@ namespace CarPartsMarketplace.Business.Tools
                 LastName = "Admin",
                 EmailConfirmation = true,
                 AccessFailedCount = 0,
+                CreatedAt = 1,
                 CreatedDate = DateTime.UtcNow,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
@@ -24,6 +26,11 @@ namespace CarPartsMarketplace.Business.Tools
                 LastActivity = DateTime.UtcNow,
                 LockoutEnabled = false,
                 ModifiedDate = DateTime.UtcNow,
+            });
+            context.UserOperationClaims.Add(new UserOperationClaim()
+            {
+                OperationClaimId = 1,
+                UserId = 1
             });
             context.SaveChanges();
         }

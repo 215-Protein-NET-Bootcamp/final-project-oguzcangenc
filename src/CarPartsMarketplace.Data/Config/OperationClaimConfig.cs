@@ -13,12 +13,22 @@ namespace CarPartsMarketplace.Data.Config
                 new OperationClaim()
                 {
                     Id = 1,
-                    Name = "admin"
+                    Name = "admin",
+                    CreatedAt = 1,
+                    CreatedDate = DateTime.UtcNow,
+                    IsDeleted = false,
+                    LastActivity = DateTime.UtcNow,
+                    ModifiedDate = DateTime.UtcNow
                 },
                 new OperationClaim()
                 {
                     Id = 2,
-                    Name = "customer"
+                    Name = "customer",
+                    CreatedAt = 1,
+                    CreatedDate = DateTime.UtcNow,
+                    IsDeleted = false,
+                    LastActivity = DateTime.UtcNow,
+                    ModifiedDate = DateTime.UtcNow
                 }
             });
             base.Configure(builder);

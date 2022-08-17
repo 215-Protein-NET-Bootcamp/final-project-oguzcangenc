@@ -14,7 +14,7 @@ namespace CarPartsMarketplace.Core.Aspects.Autofac.Performance
         public PerformanceAspect(int interval)
         {
             _interval = interval;
-            _stopwatch = ServiceTool.ServiceProvider.GetService<Stopwatch>();
+            _stopwatch = DependencyResolvers.ServiceTool.ServiceProvider.GetService<Stopwatch>();
         }
 
         protected override void OnBefore(IInvocation invocation)
