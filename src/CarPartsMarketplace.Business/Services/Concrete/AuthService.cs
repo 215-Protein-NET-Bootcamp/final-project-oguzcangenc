@@ -143,8 +143,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             _applicationUserService.Update(user.Data);
             await _unitOfWork.CompleteAsync();
             await _jobManager.AccountLocoutActivationMailJob(accountActivationDto.Email);
-            await _jobManager.RegisterUserActivationSuccessfulyMailJobAsync(new RegisterUserActivationSuccessfulyDto()
-            { Email = accountActivationDto.Email });
+            
             return new SuccessResult(Messages.ACCOUNT_ACTIVATED);
         }
 
@@ -206,7 +205,8 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 user.Data.EmailConfirmation = true;
                 _applicationUserService.Update(user.Data);
                 await _unitOfWork.CompleteAsync();
-
+                await _jobManager.RegisterUserActivationSuccessfulyMailJobAsync(new RegisterUserActivationSuccessfulyDto()
+                    { Email = userEmailConfirmationDto.Email });
                 return new SuccessResult(Messages.EMAIL_CONFIRMED);
             }
             return new ErrorResult(Messages.EMAIL_NOT_CONFIRMED);

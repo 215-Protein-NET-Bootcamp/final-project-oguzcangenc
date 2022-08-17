@@ -35,7 +35,7 @@ namespace CarPartsMarketplace.Business.BackgroundJobs.Manager
             _backgroundJobClient.Enqueue<ISendMailJob>(job => job.SendMail(new MailRequest()
             {
                 Body ="Hesabınız Başarıyla Doğrulandı. İyi alışverişler dileriz",
-                Subject = "Car Parts Marketplace Hoşgeldiniz.",
+                Subject = "Hesabınız Başarıyla Doğrulandı - Car Parts Marketplace",
                 ToEmail = jobDto.Email
             }));
         }
