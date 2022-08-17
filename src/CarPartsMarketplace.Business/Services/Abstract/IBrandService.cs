@@ -1,6 +1,8 @@
-﻿namespace CarPartsMarketplace.Business.Services.Abstract
+﻿using CarPartsMarketplace.Entities.Dtos.Brand;
+
+namespace CarPartsMarketplace.Business.Services.Abstract
 {
-    public interface IBrandService
+    public interface IBrandService:IGenericService<BrandDto,CreateBrandDto,UpdateBrandDto>
     {
     }
 }
