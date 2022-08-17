@@ -1,7 +1,7 @@
 ﻿using CarPartsMarketplace.Business.Services.Abstract;
 using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
-using CarPartsMarketplace.Entities.Dtos;
+using CarPartsMarketplace.Entities.Dtos.ApplicationUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using IResult = CarPartsMarketplace.Core.Utilities.Results.IResult;
@@ -9,7 +9,7 @@ using IResult = CarPartsMarketplace.Core.Utilities.Results.IResult;
 
 namespace CarPartsMarketplace.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1.0/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {

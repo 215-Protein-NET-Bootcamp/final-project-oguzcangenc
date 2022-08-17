@@ -1,6 +1,6 @@
 ﻿using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
-using CarPartsMarketplace.Entities.Dtos;
+using CarPartsMarketplace.Entities.Dtos.ApplicationUser;
 
 namespace CarPartsMarketplace.Business.Services.Abstract
 {

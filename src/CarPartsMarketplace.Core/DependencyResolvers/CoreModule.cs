@@ -2,6 +2,9 @@
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Caching;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Caching.Microsoft;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
+using CarPartsMarketplace.Core.Data;
+using CarPartsMarketplace.Core.Data.UnitOfWork.Abstract;
+using CarPartsMarketplace.Core.Data.UnitOfWork.Concrete;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;

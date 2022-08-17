@@ -2,7 +2,7 @@
 using CarPartsMarketplace.Business.BackgroundJobs.Abstract;
 using CarPartsMarketplace.Core.Utilities.Security.Hashing;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
-using CarPartsMarketplace.Entities.Dtos;
+using CarPartsMarketplace.Entities.Dtos.ApplicationUser;
 using Hangfire;
 using Microsoft.Extensions.Options;
 

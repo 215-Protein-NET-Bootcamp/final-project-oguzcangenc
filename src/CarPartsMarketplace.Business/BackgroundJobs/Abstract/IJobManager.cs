@@ -1,4 +1,4 @@
-﻿using CarPartsMarketplace.Entities.Dtos;
+﻿using CarPartsMarketplace.Entities.Dtos.ApplicationUser;
 
 namespace CarPartsMarketplace.Business.BackgroundJobs.Abstract
 {

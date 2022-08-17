@@ -1,7 +1,7 @@
 ﻿
 using AutoMapper;
 using CarPartsMarketplace.Entities;
-using CarPartsMarketplace.Entities.Dtos;
+using CarPartsMarketplace.Entities.Dtos.ApplicationUser;
 
 namespace CarPartsMarketplace.Business.Mapping.AutoMapper
 {

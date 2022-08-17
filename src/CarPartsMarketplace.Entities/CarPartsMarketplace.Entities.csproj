@@ -10,4 +10,12 @@
     <ProjectReference Include="..\CarPartsMarketplace.Core\CarPartsMarketplace.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\Brand\" />
+    <Folder Include="Dtos\Color\" />
+    <Folder Include="Dtos\Category\" />
+    <Folder Include="Dtos\Offer\" />
+    <Folder Include="Dtos\Product\" />
+  </ItemGroup>
+
 </Project>

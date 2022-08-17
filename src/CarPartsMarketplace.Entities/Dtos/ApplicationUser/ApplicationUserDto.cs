@@ -1,6 +1,6 @@
 ﻿using CarPartsMarketplace.Core.Entities;
 
-namespace CarPartsMarketplace.Entities.Dtos
+namespace CarPartsMarketplace.Entities.Dtos.ApplicationUser
 {
     public class ApplicationUserDto : IDto
     {

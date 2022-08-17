@@ -2,11 +2,6 @@
 using CarPartsMarketplace.Data.Context.EntityFramework;
 using CarPartsMarketplace.Data.Repositories.Abstract;
 using CarPartsMarketplace.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarPartsMarketplace.Data.Repositories.Concrete
 {

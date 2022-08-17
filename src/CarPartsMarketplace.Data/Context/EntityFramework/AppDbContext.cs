@@ -21,12 +21,14 @@ namespace CarPartsMarketplace.Data.Context.EntityFramework
         }
 
 
-        DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        DbSet<Brand> Brands { get; set; }
-        DbSet<Color> Colors { get; set; }
-        DbSet<Category> Categories { get; set; }
-        DbSet<Offer> Offers { get; set; }
-        DbSet<Product> Products { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Offer> Offers { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
 
     }
 }

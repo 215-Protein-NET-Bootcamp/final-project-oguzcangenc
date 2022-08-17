@@ -1,4 +1,4 @@
-﻿using CarPartsMarketplace.Entities.Dtos;
+﻿using CarPartsMarketplace.Entities.Dtos.ApplicationUser;
 using FluentValidation;
 
 namespace CarPartsMarketplace.Business.Validation.FluentValidation;
