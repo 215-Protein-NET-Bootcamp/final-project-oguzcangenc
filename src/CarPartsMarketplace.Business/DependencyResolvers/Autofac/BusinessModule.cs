@@ -16,13 +16,27 @@ using CarPartsMarketplace.Data.Repositories.UnitOfWork.Concrete;
 
 namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
 {
-    public class BusinessModule:Module
+    public class BusinessModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
+            //Service Registers
             builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
             builder.RegisterType<AuthService>().As<IAuthService>().InstancePerLifetimeScope();
+            builder.RegisterType<BrandService>().As<IBrandService>().InstancePerLifetimeScope();
+            builder.RegisterType<ProductService>().As<IProductService>().InstancePerLifetimeScope();
+            builder.RegisterType<ColorService>().As<IColorService>().InstancePerLifetimeScope();
+            builder.RegisterType<OfferRepository>().As<IOfferService>().InstancePerLifetimeScope();
+            builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
+
+            //Repository Register
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<OfferRepository>().As<IOfferRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<ProductRepository>().As<IProductRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<ColorRepository>().As<IColorRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<BrandRepository>().As<IBrandRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<CategoryRepository>().As<IColorRepository>().InstancePerLifetimeScope();
+
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             builder.RegisterType<MailService>().As<IMailService>().InstancePerDependency();
             builder.RegisterType<SendMailJob>().As<ISendMailJob>().InstancePerLifetimeScope();
@@ -38,5 +52,5 @@ namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
         }
     }
 
-   
+
 }
