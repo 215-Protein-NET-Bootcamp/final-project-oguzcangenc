@@ -30,6 +30,16 @@ namespace CarPartsMarketplace.Business.BackgroundJobs.Manager
             }));
         }
 
+        public async Task RegisterUserActivationSuccessfulyMailJobAsync(RegisterUserActivationSuccessfulyDto jobDto)
+        {
+            _backgroundJobClient.Enqueue<ISendMailJob>(job => job.SendMail(new MailRequest()
+            {
+                Body ="Hesabınız Başarıyla Doğrulandı. İyi alışverişler dileriz",
+                Subject = "Car Parts Marketplace Hoşgeldiniz.",
+                ToEmail = jobDto.Email
+            }));
+        }
+
         public async Task AccountLocoutInformaitonMailJob(string email)
         {
             _backgroundJobClient.Enqueue<ISendMailJob>(job => job.SendMail(new MailRequest()

@@ -67,7 +67,7 @@ namespace CarPartsMarketplace.API.Controllers
         /// </summary>
         /// <param name="confirmationDto"></param>
         /// <returns></returns>
-        ///
+        [AllowAnonymous]
         [HttpGet("email-confirmation")]
         public async Task<IActionResult> EmailConfirmation([FromQuery]UserEmailConfirmationDto confirmationDto)
         {            

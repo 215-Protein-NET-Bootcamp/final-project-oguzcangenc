@@ -143,6 +143,8 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             _applicationUserService.Update(user.Data);
             await _unitOfWork.CompleteAsync();
             await _jobManager.AccountLocoutActivationMailJob(accountActivationDto.Email);
+            await _jobManager.RegisterUserActivationSuccessfulyMailJobAsync(new RegisterUserActivationSuccessfulyDto()
+            { Email = accountActivationDto.Email });
             return new SuccessResult(Messages.ACCOUNT_ACTIVATED);
         }
 
