@@ -1,6 +1,6 @@
 ﻿namespace CarPartsMarketplace.Core.Entities
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity:IEntity
     {
         public int Id { get; set; }
         public int CreatedAt { get; set; }

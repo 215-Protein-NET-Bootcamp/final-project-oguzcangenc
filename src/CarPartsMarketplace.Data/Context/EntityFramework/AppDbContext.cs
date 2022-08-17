@@ -1,4 +1,6 @@
-﻿using CarPartsMarketplace.Entities;
+﻿using CarPartsMarketplace.Core.Entities;
+using CarPartsMarketplace.Data.Config;
+using CarPartsMarketplace.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarPartsMarketplace.Data.Context.EntityFramework
@@ -12,6 +14,8 @@ namespace CarPartsMarketplace.Data.Context.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new OperationClaimConfig());
+
             base.OnModelCreating(modelBuilder);
         }
 

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarPartsMarketplace.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220816214153_mig_6")]
-    partial class mig_6
+    [Migration("20220817113917_mig_1")]
+    partial class mig_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,74 @@ namespace CarPartsMarketplace.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CarPartsMarketplace.Core.Entities.OperationClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CreatedAt")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastActivity")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OperationClaims");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = 0,
+                            IsDeleted = false,
+                            Name = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = 0,
+                            IsDeleted = false,
+                            Name = "customer"
+                        });
+                });
+
+            modelBuilder.Entity("CarPartsMarketplace.Core.Entities.UserOperationClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OperationClaimId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserOperationClaims");
+                });
 
             modelBuilder.Entity("CarPartsMarketplace.Entities.ApplicationUser", b =>
                 {
@@ -224,6 +292,9 @@ namespace CarPartsMarketplace.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("BrandId")
                         .HasColumnType("integer");
 
@@ -270,6 +341,8 @@ namespace CarPartsMarketplace.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("BrandId");
 
                     b.HasIndex("CategoryId");
@@ -290,6 +363,12 @@ namespace CarPartsMarketplace.Data.Migrations
 
             modelBuilder.Entity("CarPartsMarketplace.Entities.Product", b =>
                 {
+                    b.HasOne("CarPartsMarketplace.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany("Products")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CarPartsMarketplace.Entities.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId")
@@ -306,11 +385,18 @@ namespace CarPartsMarketplace.Data.Migrations
                         .WithMany("Products")
                         .HasForeignKey("ColorId");
 
+                    b.Navigation("ApplicationUser");
+
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
 
                     b.Navigation("Color");
+                });
+
+            modelBuilder.Entity("CarPartsMarketplace.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("CarPartsMarketplace.Entities.Brand", b =>

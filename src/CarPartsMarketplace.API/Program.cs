@@ -1,86 +1,62 @@
 using System.Text.Json.Serialization;
-using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using AutoMapper;
 using CarPartsMarketplace.API.Extensions.StartupExtension;
 using CarPartsMarketplace.API.Middleware;
 using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
 using CarPartsMarketplace.Business.DependencyResolvers.Autofac;
-using CarPartsMarketplace.Business.Mapping.AutoMapper;
+using CarPartsMarketplace.Business.Tools;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
 using CarPartsMarketplace.Core.DependencyResolvers;
 using CarPartsMarketplace.Core.Extensions;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using CarPartsMarketplace.Data.Context.EntityFramework;
 using Hangfire;
-using Hangfire.PostgreSql;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddHangfire(x =>
-    {
-        x.UsePostgreSqlStorage(builder.Configuration.GetConnectionString("DefaultConnection"));
 
-    }
-);
+builder.Host.UseSerilogExtension();
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.UseAutofacConfigureContainer(new BusinessModule());
+
+builder.Services.AddCustomizeHangfire(builder, connectionString:"DefaultConnection");
+builder.Services.AddDbContextDependencyInjection<AppDbContext>(builder, connectionString:"DefaultConnection");
 
 builder.Services.AddHangfireServer();
-builder.Host.UseSerilogExtension();
 builder.Services.AddCustomSwaggerExtension();
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-var coreModule = new CoreModule();
-builder.Host.ConfigureContainer<ContainerBuilder>(b =>
-{
-    b.RegisterModule(new BusinessModule());
-});
-builder.Services.AddDependencyResolvers(builder.Configuration, new ICoreModule[] { coreModule });
+builder.Services.AddDependencyResolvers(builder.Configuration, new ICoreModule[] { new CoreModule()});
+
+
 builder.Services.Configure<FileLogConfiguration>(builder.Configuration.GetSection("FileLogConfiguration"));
-builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
-{
-    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
-}));
-var mapperConfig = new MapperConfiguration(cfg =>
-{
-    cfg.AddProfile(new MappingProfile());
-});
 builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection("TokenOptions"));
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
-builder.Services.AddSingleton(mapperConfig.CreateMapper());
-builder.Services.AddDbContext<AppDbContext>(opt =>
-{
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddCustomizeCors("corsapp");
+builder.Services.AddAutoMapperDependecyInjection(builder);
+
+
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 ServiceTool.ServiceProvider = builder.Services.BuildServiceProvider();
 
 var app = builder.Build();
-
 if (app.Environment.IsDevelopment())
 {
-   
+
 }
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dataContext.Database.Migrate();
+    if (dataContext.Database.EnsureCreated())
+    {
+        SeedDatabase.Seed(dataContext);
+        Console.WriteLine("-----> Seed Database");
+    }
 }
 app.UseSwagger();
-app.UseSwaggerUI(opt =>
-{
-    //Hide Schemas
-    opt.DefaultModelsExpandDepth(-1);
-});
+app.UseSwaggerUI();
 app.UseCors("corsapp");
 app.UseHttpsRedirection();
-var options = new DashboardOptions()
-{
-    Authorization = new[] { new HangfireAuthorizationFilter() }
-};
-app.UseHangfireDashboard("/hangfire-server", options);
-
+app.UseCustomizeHangfireDashboard("/hangfire-server");
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<HeartbeatMiddleware>();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

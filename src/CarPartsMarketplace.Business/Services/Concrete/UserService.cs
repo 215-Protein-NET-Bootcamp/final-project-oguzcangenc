@@ -1,8 +1,8 @@
 ﻿using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
-using CarPartsMarketplace.Core.Data.UnitOfWork.Abstract;
 using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Data.Repositories.Abstract;
+using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 using CarPartsMarketplace.Entities;
 
 namespace CarPartsMarketplace.Business.Services.Concrete
