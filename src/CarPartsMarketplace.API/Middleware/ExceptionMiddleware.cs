@@ -1,70 +1,69 @@
 ﻿using System.Net;
 using System.Security;
+using System.Text.Json;
 using CarPartsMarketplace.Core.Constants;
+using CarPartsMarketplace.Core.Utilities.Results;
 using FluentValidation;
+using Serilog;
 
 namespace CarPartsMarketplace.API.Middleware
 {
-    public class ExceptionMiddleware
+    public class MessageResultException : Exception
+    {
+        public MessageResultException()
+        {
+        }
+
+        public MessageResultException(string message) : base(message)
+        {
+        }
+
+        public MessageResultException(string message, Exception inner) : base(message, inner)
+        {
+        }
+    }
+    public class ErrorHandlerMiddleware
     {
         private readonly RequestDelegate _next;
 
-
-        public ExceptionMiddleware(RequestDelegate next)
+        public ErrorHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
+        public async Task Invoke(HttpContext context)
         {
             try
             {
-                await _next(httpContext);
+                await _next(context);
             }
-            catch (Exception e)
+            catch (Exception error)
             {
-                await HandleExceptionAsync(httpContext, e);
-            }
-        }
+                var response = context.Response;
+                response.ContentType = "application/json";
 
+                var messageError = string.Empty;
 
-        private async Task HandleExceptionAsync(HttpContext httpContext, Exception e)
-        {
-            httpContext.Response.ContentType = "application/json";
-            httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            _ = e.Message;
-            string message;
-            if (e.GetType() == typeof(ValidationException))
-            {
-                message = e.Message;
-                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            }
-            else if (e.GetType() == typeof(ApplicationException))
-            {
-                message = e.Message;
-                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            }
-            else if (e.GetType() == typeof(UnauthorizedAccessException))
-            {
-                message = e.Message;
-                httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            }
-            else if (e.GetType() == typeof(SecurityException))
-            {
-                message = e.Message;
-                httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            }
-            else if (e.GetType() == typeof(NotSupportedException))
-            {
-                message = e.Message;
-                httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            }
-            else
-            {
-                message = ExceptionMessage.InternalServerError;
-            }
+                // Using switch for custom exception
+                switch (error)
+                {
+                    // Add custom exception code below!
+                    case MessageResultException ex:
+                        messageError = ex.Message;
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        break;
+                    default:
+                        // unhandled error
+                        messageError = error.Message;
+                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        break;
+                }
 
-            await httpContext.Response.WriteAsync(message);
+                Log.Error(error, messageError);
+
+                var result = JsonSerializer.Serialize(new ErrorDataResult<object>(messageError));
+                await response.WriteAsync(result);
+            }
         }
     }
 }

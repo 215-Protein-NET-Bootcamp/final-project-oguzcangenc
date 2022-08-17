@@ -9,9 +9,9 @@ using IResult = CarPartsMarketplace.Core.Utilities.Results.IResult;
 
 namespace CarPartsMarketplace.API.Controllers
 {
-    [Route("api/v1.0/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseApiController
     {
         private readonly IAuthService _authService;
 
@@ -38,7 +38,7 @@ namespace CarPartsMarketplace.API.Controllers
             {
                 return Ok(userToLogin);
             }
-            return BadRequest(userToLogin);
+            return Unauthorized(userToLogin);
         }
         /// <summary>
         /// Register Endpoint

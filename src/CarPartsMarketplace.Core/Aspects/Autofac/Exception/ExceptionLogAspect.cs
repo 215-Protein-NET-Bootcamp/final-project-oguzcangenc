@@ -2,7 +2,6 @@
 using CarPartsMarketplace.Core.Constants;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
-using CarPartsMarketplace.Core.DependencyResolvers;
 using CarPartsMarketplace.Core.Utilities.Interceptors;
 using Castle.DynamicProxy;
 using Microsoft.AspNetCore.Http;
@@ -19,8 +18,7 @@ namespace CarPartsMarketplace.Core.Aspects.Autofac.Exception
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ExceptionLogAspect(Type loggerService)
-        {
-            if (loggerService.BaseType != typeof(LoggerServiceBase))
+        { if (loggerService.BaseType != typeof(LoggerServiceBase))
             {
                 throw new ArgumentException(Messages.WrongLoggerType);
             }

@@ -30,8 +30,7 @@ public abstract class MethodInterception : MethodInterceptionBaseAttribute
             if (isSuccess)
             {
                 OnSuccess(invocation);
-            }
-        }
+            } }
 
         OnAfter(invocation);
     }
