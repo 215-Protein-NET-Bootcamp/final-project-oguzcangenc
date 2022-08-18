@@ -8,20 +8,7 @@ using Serilog;
 
 namespace CarPartsMarketplace.API.Middleware
 {
-    public class MessageResultException : Exception
-    {
-        public MessageResultException()
-        {
-        }
-
-        public MessageResultException(string message) : base(message)
-        {
-        }
-
-        public MessageResultException(string message, Exception inner) : base(message, inner)
-        {
-        }
-    }
+  
     public class ErrorHandlerMiddleware
     {
         private readonly RequestDelegate _next;

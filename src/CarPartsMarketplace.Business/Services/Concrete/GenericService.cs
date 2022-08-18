@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
 using CarPartsMarketplace.Core.Data;
 using CarPartsMarketplace.Core.Entities;
@@ -19,29 +20,80 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
-        public virtual Task<IDataResult<TMainDto>> Get(int id)
+        public virtual async Task<IDataResult<TMainDto>> Get(int id)
         {
-            throw new NotImplementedException();
+            var tempEntity = await _baseRepository.GetAsync(p => p.Id == id);
+            var result = _mapper.Map<TEntity, TMainDto>(tempEntity);
+
+            return new SuccessDataResult<TMainDto>(result, Messages.RECORD_LISTED);
         }
 
-        public virtual Task<IDataResult<List<TMainDto>>> GetAll()
+        public virtual async Task<IDataResult<IEnumerable<TMainDto>>> GetAll()
         {
-            throw new NotImplementedException();
+            // Get list record from DB
+            var tempEntity = await _baseRepository.GetAllAsync();
+            // Mapping Entity to Resource
+            var result = _mapper.Map<IEnumerable<TEntity>, IEnumerable<TMainDto>>(tempEntity);
+
+            return new SuccessDataResult<IEnumerable<TMainDto>>(result, Messages.RECORD_LISTED);
         }
 
-        public virtual Task<IResult> Create(TMainDto input)
+        public virtual async Task<IResult> Create(TCreateDto createResource)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tempEntity = _mapper.Map<TCreateDto, TEntity>(createResource);
+                await _baseRepository.AddAsync(tempEntity);
+                await _unitOfWork.CompleteAsync();
+
+                return new SuccessDataResult<TCreateDto>(_mapper.Map<TEntity, TCreateDto>(tempEntity), Messages.RECORD_ADDED);
+            }
+            catch (Exception ex)
+            {
+                throw new MessageResultException(Messages.ADD_ERROR, ex);
+            }
         }
 
-        public virtual Task<IResult> Update(TUpdateDto input)
+        public virtual async Task<IResult> Update(int id, TUpdateDto updateResource)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tempEntity = await _baseRepository.GetByIdAsync(id);
+                if (tempEntity is null)
+                    return new ErrorDataResult<TUpdateDto>(Messages.ID_NOT_EXISTENT);
+
+                tempEntity = _mapper.Map(updateResource, tempEntity);
+                _baseRepository.Update(tempEntity);
+                await _unitOfWork.CompleteAsync();
+
+                var resource = _mapper.Map<TEntity, TUpdateDto>(tempEntity);
+
+                return new SuccessDataResult<TUpdateDto>(resource, Messages.RECORD_UPDATED);
+            }
+            catch (Exception ex)
+            {
+                throw new MessageResultException(Messages.UPDATE_ERROR, ex);
+            }
         }
 
-        public virtual Task<IResult> Delete(int id)
+        public virtual async Task<IResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // Validate Id is existent
+                var tempEntity = await _baseRepository.GetByIdAsync(id);
+                if (tempEntity is null)
+                    return new ErrorResult(Messages.ID_NOT_EXISTENT);
+
+                _baseRepository.Delete(tempEntity);
+                await _unitOfWork.CompleteAsync();
+
+                return new SuccessResult(Messages.RECORD_DELETED);
+            }
+            catch (Exception ex)
+            {
+                throw new MessageResultException(Messages.DELETE_ERROR, ex);
+            }
         }
     }
 }

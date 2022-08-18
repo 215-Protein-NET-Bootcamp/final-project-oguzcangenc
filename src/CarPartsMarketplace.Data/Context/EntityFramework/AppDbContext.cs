@@ -23,7 +23,27 @@ namespace CarPartsMarketplace.Data.Context.EntityFramework
         {
             base.OnConfiguring(optionsBuilder);
         }
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is BaseEntity && (
+                    e.State == EntityState.Added
+                    || e.State == EntityState.Modified));
 
+            foreach (var entityEntry in entries)
+            {
+                ((BaseEntity)entityEntry.Entity).ModifiedDate = DateTime.UtcNow;
+                ((BaseEntity)entityEntry.Entity).LastActivity = DateTime.UtcNow;
+
+                if (entityEntry.State == EntityState.Added)
+                {
+                    ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.UtcNow;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Brand> Brands { get; set; }

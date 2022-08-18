@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using CarPartsMarketplace.Business.Services.Abstract;
+using CarPartsMarketplace.Entities.Dtos.Brand;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarPartsMarketplace.API.Controllers
 {
@@ -8,36 +8,54 @@ namespace CarPartsMarketplace.API.Controllers
     [ApiController]
     public class BrandController : ControllerBase
     {
+        private readonly IBrandService _brandService;
+        public BrandController(IBrandService brandService)
+        {
+            _brandService = brandService;
+        }
         // GET: api/<BrandController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var response = await _brandService.GetAll();
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
         }
 
-        // GET api/<BrandController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //// GET api/<BrandController>/5
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> Get(int id)
+        //{
+        //    return "value";
+        //}
 
         // POST api/<BrandController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] CreateBrandDto brandDto)
         {
+            var result = await _brandService.Create(brandDto);
+            if (result.Success)
+            {
+                return Ok(result);
+
+            }
+
+            return BadRequest(result);
         }
 
-        // PUT api/<BrandController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT api/<BrandController>/5
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        // DELETE api/<BrandController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE api/<BrandController>/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //}
     }
 }
