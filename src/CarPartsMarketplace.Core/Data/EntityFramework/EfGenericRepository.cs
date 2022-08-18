@@ -1,15 +1,16 @@
 ﻿using System.Linq.Expressions;
 using CarPartsMarketplace.Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CarPartsMarketplace.Core.Data.EntityFramework
 {
-    public abstract class EfGenericRepository<TEntity,TContext> : IEfGenericRepository<TEntity> where TEntity : BaseEntity, IEntity, new() where TContext:DbContext
+    public abstract class EfGenericRepository<TEntity, TContext> : IEfGenericRepository<TEntity> where TEntity : BaseEntity, IEntity, new() where TContext : DbContext
     {
         protected readonly TContext Context;
         private readonly DbSet<TEntity> _entities;
 
-        public EfGenericRepository(TContext dbContext)
+        protected EfGenericRepository(TContext dbContext)
         {
             Context = dbContext;
             _entities = Context.Set<TEntity>();
@@ -30,17 +31,18 @@ namespace CarPartsMarketplace.Core.Data.EntityFramework
 
         public virtual async Task<TEntity?> GetByIdAsync(int entityId)
         {
-            return await _entities.AsNoTracking().Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Id == entityId);
+            return await _entities.Where(x => !x.IsDeleted).FirstOrDefaultAsync(x => x.Id == entityId);
         }
 
         public virtual async Task AddAsync(TEntity entity)
         {
             await _entities.AddAsync(entity);
+
         }
 
         public virtual void Delete(TEntity entity)
         {
-            _entities.Remove(entity);
+             _entities.Remove(entity);
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? filter = null)
@@ -53,6 +55,7 @@ namespace CarPartsMarketplace.Core.Data.EntityFramework
         public virtual void Update(TEntity entity)
         {
             _entities.Update(entity);
+            Context.Entry<TEntity>(entity).State = EntityState.Modified;
         }
     }
 }

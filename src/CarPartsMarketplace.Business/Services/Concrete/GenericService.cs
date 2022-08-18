@@ -23,6 +23,9 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         public virtual async Task<IDataResult<TMainDto>> Get(int id)
         {
             var tempEntity = await _baseRepository.GetAsync(p => p.Id == id);
+            if (tempEntity is null)
+                return new ErrorDataResult<TMainDto>(Messages.ID_NOT_EXISTENT);
+
             var result = _mapper.Map<TEntity, TMainDto>(tempEntity);
 
             return new SuccessDataResult<TMainDto>(result, Messages.RECORD_LISTED);

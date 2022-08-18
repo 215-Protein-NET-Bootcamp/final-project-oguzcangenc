@@ -10,7 +10,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
 {
     public class BrandService:GenericService<BrandDto,CreateBrandDto,UpdateBrandDto,Brand>,IBrandService
     {
-        public BrandService(IBrandRepository baseRepository, IMapper mapper, IUnitOfWork unitOfWork) : base(baseRepository, mapper, unitOfWork)
+        public BrandService(IBrandRepository brandRepository, IMapper mapper, IUnitOfWork unitOfWork) : base(brandRepository, mapper, unitOfWork)
         {
         }
     }

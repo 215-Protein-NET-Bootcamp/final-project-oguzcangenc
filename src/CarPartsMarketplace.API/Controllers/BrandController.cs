@@ -13,7 +13,7 @@ namespace CarPartsMarketplace.API.Controllers
         {
             _brandService = brandService;
         }
-        // GET: api/<BrandController>
+        
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -25,14 +25,19 @@ namespace CarPartsMarketplace.API.Controllers
             return BadRequest(response);
         }
 
-        //// GET api/<BrandController>/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> Get(int id)
-        //{
-        //    return "value";
-        //}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var result = await _brandService.Get(id);
+            if (result.Success)
+            {
+                return Ok(result);
 
-        // POST api/<BrandController>
+            }
+
+            return NotFound(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateBrandDto brandDto)
         {
@@ -46,16 +51,29 @@ namespace CarPartsMarketplace.API.Controllers
             return BadRequest(result);
         }
 
-        //// PUT api/<BrandController>/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Put(int id, [FromBody] string value)
-        //{
-        //}
 
-        //// DELETE api/<BrandController>/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateBrandDto updateBrandDto)
+        {
+            var result = await _brandService.Update(id, updateBrandDto);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _brandService.Delete(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

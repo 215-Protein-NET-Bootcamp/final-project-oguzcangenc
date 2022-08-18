@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CarPartsMarketplace.Business.Services.Abstract;
+using CarPartsMarketplace.Entities.Dtos.Brand;
+using CarPartsMarketplace.Entities.Dtos.Category;
+using CarPartsMarketplace.Entities.Dtos.Color;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarPartsMarketplace.API.Controllers
 {
@@ -7,35 +11,73 @@ namespace CarPartsMarketplace.API.Controllers
     public class CategoryController : ControllerBase
     {
         // GET: api/<CategoryController>
+        private readonly ICategoryService _categoryService
+            ;
+        public CategoryController(ICategoryService categoryService)
+        {
+            _categoryService = categoryService;
+        }
+
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var response = await _categoryService.GetAll();
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
         }
 
-        // GET api/<CategoryController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var result = await _categoryService.Get(id);
+            if (result.Success)
+            {
+                return Ok(result);
+
+            }
+
+            return NotFound(result);
         }
 
-        // POST api/<CategoryController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] CreateCategoryDto createCategoryDto)
         {
+            var result = await _categoryService.Create(createCategoryDto);
+            if (result.Success)
+            {
+                return Ok(result);
+
+            }
+
+            return BadRequest(result);
         }
 
-        // PUT api/<CategoryController>/5
+
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateCategoryDto updateCategoryDto)
         {
+            var result = await _categoryService.Update(id, updateCategoryDto);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+
         }
 
-        // DELETE api/<CategoryController>/5
+
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var result = await _categoryService.Delete(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }
