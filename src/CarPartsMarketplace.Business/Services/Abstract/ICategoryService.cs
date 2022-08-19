@@ -1,5 +1,4 @@
-﻿using CarPartsMarketplace.Entities;
-using CarPartsMarketplace.Entities.Dtos.Category;
+﻿using CarPartsMarketplace.Entities.Dtos.Category;
 
 namespace CarPartsMarketplace.Business.Services.Abstract
 {

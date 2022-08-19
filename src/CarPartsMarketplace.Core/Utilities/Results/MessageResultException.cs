@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CarPartsMarketplace.Core.Utilities.Results
+﻿namespace CarPartsMarketplace.Core.Utilities.Results
 {
     public class MessageResultException : Exception
     {

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CarPartsMarketplace.Business.Services.Abstract;
+using CarPartsMarketplace.Business.Services.Concrete;
+using CarPartsMarketplace.Entities.Dtos.Product;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,31 +12,54 @@ namespace CarPartsMarketplace.API.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        // GET: api/<ProductController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IProductService _productService;
+        public ProductController(IProductService productService)
         {
-            return new string[] { "value1", "value2" };
+            _productService = productService;
+        }
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var response = await _productService.GetAll();
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
         }
 
         // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            var response = await _productService.Get(id);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
         }
 
-        // POST api/<ProductController>
+       [Authorize]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromForm] CreateProductDto createProductDto)
         {
+            var response = await _productService.Create(createProductDto);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(response);
         }
+        [Authorize]
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
+        [Authorize]
 
         // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]

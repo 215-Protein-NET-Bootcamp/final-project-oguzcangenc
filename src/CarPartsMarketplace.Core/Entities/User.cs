@@ -1,6 +1,6 @@
 ﻿namespace CarPartsMarketplace.Core.Entities;
 
-public class User : BaseEntity, IEntity
+public class User : BaseEntity
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
@@ -8,4 +8,5 @@ public class User : BaseEntity, IEntity
     public byte[]? PasswordSalt { get; set; }
     public byte[]? PasswordHash { get; set; }
 
+    public virtual ICollection<UserOperationClaim> UserOperationClaims { get; set; }
 }

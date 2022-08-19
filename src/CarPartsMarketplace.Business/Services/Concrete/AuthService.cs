@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CarPartsMarketplace.Business.Aspect;
 using CarPartsMarketplace.Business.BackgroundJobs.Abstract;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
@@ -127,6 +128,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         /// <param name="accountActivationDto"></param>
         /// <returns></returns>
         [LogAspect(typeof(FileLogger))]
+        [AuthorizationCheck("admin")]
         [ValidationAspect(typeof(AccountActivationValidator))]
         public async Task<IResult> AccountActivation(AccountActivationDto accountActivationDto)
         {

@@ -7,6 +7,7 @@ using CarPartsMarketplace.Entities.Dtos.Category;
 using CarPartsMarketplace.Entities.Dtos.Color;
 using CarPartsMarketplace.Entities.Dtos.Offer;
 using CarPartsMarketplace.Entities.Dtos.Product;
+using CarPartsMarketplace.Entities.Dtos.Usage;
 
 namespace CarPartsMarketplace.Business.Mapping.AutoMapper
 {
@@ -37,6 +38,10 @@ namespace CarPartsMarketplace.Business.Mapping.AutoMapper
             CreateMap<OfferDto, Offer>().ReverseMap();
             CreateMap<CreateOfferDto, Offer>().ReverseMap();
             CreateMap<UpdateOfferDto, Offer>().ReverseMap();
+
+            CreateMap<UsageDto, Usage>().ReverseMap();
+            CreateMap<CreateUsageDto, Usage>().ReverseMap();
+            CreateMap<UpdateUsageDto, Usage>().ReverseMap();
 
 
         }

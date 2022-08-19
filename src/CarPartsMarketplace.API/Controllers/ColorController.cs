@@ -1,5 +1,6 @@
 ﻿using CarPartsMarketplace.Business.Services.Abstract;
 using CarPartsMarketplace.Entities.Dtos.Color;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -41,7 +42,7 @@ namespace CarPartsMarketplace.API.Controllers
 
             return NotFound(result);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateColorDto brandDto)
         {
@@ -55,7 +56,7 @@ namespace CarPartsMarketplace.API.Controllers
             return BadRequest(result);
         }
 
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] UpdateColorDto updateColorDto)
         {
@@ -68,7 +69,7 @@ namespace CarPartsMarketplace.API.Controllers
 
         }
 
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

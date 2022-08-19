@@ -9,6 +9,7 @@ namespace CarPartsMarketplace.Entities.Dtos.ApplicationUser
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime ModifiedDate { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public int CreatedAt { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

@@ -7,5 +7,7 @@
         public static string WrongLoggerType = "Wrong logger type";
         public static string? WrongValidationType = "Bu bir doğrualama sınıfı değildir.";
         public static string? FileLogConfigurationNotFound = "Loglama Dizini Bulunamadı";
+        public static string FILE_NOT_FOUND = "Dosya Bulunamadı.";
+        public static string SUCCESS_FILE_UPLOAD = "Dosya Başarıyla Yüklendi";
     }
 }

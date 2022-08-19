@@ -1,7 +1,6 @@
 ﻿using CarPartsMarketplace.Business.Services.Abstract;
-using CarPartsMarketplace.Entities.Dtos.Brand;
 using CarPartsMarketplace.Entities.Dtos.Category;
-using CarPartsMarketplace.Entities.Dtos.Color;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPartsMarketplace.API.Controllers
@@ -41,7 +40,7 @@ namespace CarPartsMarketplace.API.Controllers
 
             return NotFound(result);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateCategoryDto createCategoryDto)
         {
@@ -55,7 +54,7 @@ namespace CarPartsMarketplace.API.Controllers
             return BadRequest(result);
         }
 
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] UpdateCategoryDto updateCategoryDto)
         {
@@ -68,7 +67,7 @@ namespace CarPartsMarketplace.API.Controllers
 
         }
 
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

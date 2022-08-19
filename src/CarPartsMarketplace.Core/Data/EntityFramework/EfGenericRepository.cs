@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using CarPartsMarketplace.Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace CarPartsMarketplace.Core.Data.EntityFramework
 {

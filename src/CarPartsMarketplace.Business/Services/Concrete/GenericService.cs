@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
+using CarPartsMarketplace.Core;
 using CarPartsMarketplace.Core.Data;
 using CarPartsMarketplace.Core.Entities;
 using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
+using Microsoft.AspNetCore.Http;
 
 namespace CarPartsMarketplace.Business.Services.Concrete
 {
@@ -13,12 +15,14 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         private readonly IEfGenericRepository<TEntity> _baseRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        protected GenericService(IEfGenericRepository<TEntity> baseRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        protected GenericService(IEfGenericRepository<TEntity> baseRepository, IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {
             _baseRepository = baseRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
         }
         public virtual async Task<IDataResult<TMainDto>> Get(int id)
         {
@@ -97,6 +101,26 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             {
                 throw new MessageResultException(Messages.DELETE_ERROR, ex);
             }
+        }
+        protected int CurrentUserId
+        {
+            get
+            {
+                if (_httpContextAccessor.HttpContext != null)
+                {
+                    var claimValue = _httpContextAccessor.HttpContext?.User?.FindFirst(t => t.Type == ClaimConstant.ApplicationUserId);
+                    if (claimValue != null)
+                    {
+                        return Convert.ToInt32(claimValue.Value);
+                    }
+                    return 0;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            set => throw new NotImplementedException();
         }
     }
 }

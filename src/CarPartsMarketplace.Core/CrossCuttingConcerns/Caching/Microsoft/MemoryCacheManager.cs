@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using CarPartsMarketplace.Core.DependencyResolvers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 

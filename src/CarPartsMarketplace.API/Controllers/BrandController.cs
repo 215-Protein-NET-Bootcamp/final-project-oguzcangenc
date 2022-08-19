@@ -1,5 +1,6 @@
 ﻿using CarPartsMarketplace.Business.Services.Abstract;
 using CarPartsMarketplace.Entities.Dtos.Brand;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarPartsMarketplace.API.Controllers
@@ -37,7 +38,8 @@ namespace CarPartsMarketplace.API.Controllers
 
             return NotFound(result);
         }
-
+        
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateBrandDto brandDto)
         {
@@ -51,7 +53,7 @@ namespace CarPartsMarketplace.API.Controllers
             return BadRequest(result);
         }
 
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] UpdateBrandDto updateBrandDto)
         {
@@ -64,7 +66,7 @@ namespace CarPartsMarketplace.API.Controllers
 
         }
 
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

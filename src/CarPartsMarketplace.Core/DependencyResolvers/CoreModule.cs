@@ -2,6 +2,8 @@
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Caching;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Caching.Microsoft;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
+using CarPartsMarketplace.Core.Utilities.FileHelper.Abstract;
+using CarPartsMarketplace.Core.Utilities.FileHelper.Concrete;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +19,7 @@ namespace CarPartsMarketplace.Core.DependencyResolvers
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<ITokenHelper, JwtHelper>();
             services.AddSingleton<ICacheManager, MemoryCacheManager>();
+            services.AddSingleton<IFileHelper, FileHelper>();
             services.AddTransient<FileLogger>();
             services.AddSingleton<Stopwatch>();
 

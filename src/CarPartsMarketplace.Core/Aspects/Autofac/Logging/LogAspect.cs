@@ -1,7 +1,6 @@
 ﻿using CarPartsMarketplace.Core.Constants;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
-using CarPartsMarketplace.Core.DependencyResolvers;
 using CarPartsMarketplace.Core.Utilities.Interceptors;
 using Castle.DynamicProxy;
 using Microsoft.AspNetCore.Http;

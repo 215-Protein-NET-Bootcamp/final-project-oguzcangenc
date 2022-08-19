@@ -1,19 +1,18 @@
 ﻿using CarPartsMarketplace.Core.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace CarPartsMarketplace.Entities.Dtos.Product;
 
 public class CreateProductDto : BaseDto
 {
-    public int Id { get; set; }
     public string Name { get; set; }
-    public string ImageUrl { get; set; }
+    public IFormFile Image { get; set; }
+    public int UsageId { get; set; }
     public string Description { get; set; }
-    public bool IsOfferable { get; set; } //bu alan default false olacak.
+    public bool IsOfferable { get; set; }
     public decimal Price { get; set; }
-    public bool IsSold { get; set; } // Bu alan default false olacak.
-
-    public virtual int CategoryId { get; set; }
-    public virtual int BrandId { get; set; }
-    public virtual int ColorId { get; set; }
+    public int CategoryId { get; set; }
+    public int? BrandId { get; set; }
+    public int? ColorId { get; set; }
 
 }

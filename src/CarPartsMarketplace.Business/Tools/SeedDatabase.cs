@@ -30,7 +30,7 @@ namespace CarPartsMarketplace.Business.Tools
             context.UserOperationClaims.Add(new UserOperationClaim()
             {
                 OperationClaimId = 1,
-                UserId = 1
+                UserId = 1,
             });
             context.SaveChanges();
         }

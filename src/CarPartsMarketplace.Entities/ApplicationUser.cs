@@ -9,5 +9,7 @@ namespace CarPartsMarketplace.Entities
         public int AccessFailedCount { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
+     
+
     }
 }

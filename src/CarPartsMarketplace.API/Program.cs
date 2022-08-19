@@ -8,7 +8,6 @@ using CarPartsMarketplace.Business.Tools;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
 using CarPartsMarketplace.Core.DependencyResolvers;
 using CarPartsMarketplace.Core.Extensions;
-using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using CarPartsMarketplace.Data.Context.EntityFramework;
 using Hangfire;
 
@@ -35,6 +34,7 @@ builder.Services.AddJwtConfigurationService(builder);
 builder.Services.AddDependencyResolvers(builder.Configuration, new ICoreModule[] { new CoreModule() });
 
 builder.Services.Configure<FileLogConfiguration>(builder.Configuration.GetSection("FileLogConfiguration"));
+
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 builder.Services.AddCustomizeCors("corsapp");
@@ -62,6 +62,7 @@ app.UseSwagger();
 app.UseCustomizeSwaggerUI();
 
 app.UseCors("corsapp");
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

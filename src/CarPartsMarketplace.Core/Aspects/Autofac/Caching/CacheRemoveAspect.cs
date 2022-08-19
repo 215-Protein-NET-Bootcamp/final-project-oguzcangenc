@@ -1,5 +1,4 @@
 ﻿using CarPartsMarketplace.Core.CrossCuttingConcerns.Caching;
-using CarPartsMarketplace.Core.DependencyResolvers;
 using CarPartsMarketplace.Core.Utilities.Interceptors;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.DependencyInjection;

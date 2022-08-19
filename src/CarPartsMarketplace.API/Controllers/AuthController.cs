@@ -84,6 +84,7 @@ namespace CarPartsMarketplace.API.Controllers
         /// <param name="confirmationDto"></param>
         /// <returns></returns>
         ///
+        [Authorize]
         [HttpGet("account-activation")]
         public async Task<IActionResult> AccountActivation([FromQuery] AccountActivationDto accountActivationDto)
         {

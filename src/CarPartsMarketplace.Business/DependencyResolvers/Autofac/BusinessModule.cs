@@ -28,6 +28,7 @@ namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
             builder.RegisterType<ColorService>().As<IColorService>().InstancePerLifetimeScope();
             builder.RegisterType<OfferService>().As<IOfferService>().InstancePerLifetimeScope();
             builder.RegisterType<CategoryService>().As<ICategoryService>().InstancePerLifetimeScope();
+            builder.RegisterType<UsageService>().As<IUsageService>().InstancePerLifetimeScope();
 
             //Repository Register
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
@@ -36,6 +37,7 @@ namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
             builder.RegisterType<ColorRepository>().As<IColorRepository>().InstancePerLifetimeScope();
             builder.RegisterType<BrandRepository>().As<IBrandRepository>().InstancePerLifetimeScope();
             builder.RegisterType<CategoryRepository>().As<ICategoryRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<UsageRepository>().As<IUsageRepository>().InstancePerLifetimeScope();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             builder.RegisterType<MailService>().As<IMailService>().InstancePerDependency();

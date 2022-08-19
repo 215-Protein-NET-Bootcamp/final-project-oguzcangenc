@@ -1,5 +1,4 @@
 ﻿using CarPartsMarketplace.Core.Constants;
-using CarPartsMarketplace.Core.DependencyResolvers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Serilog;

@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using CarPartsMarketplace.Core.Constants;
 using CarPartsMarketplace.Core.Entities;
 using CarPartsMarketplace.Core.Utilities.Security.Encyption;
 using Microsoft.Extensions.Options;
@@ -73,8 +74,17 @@ namespace CarPartsMarketplace.Core.Utilities.Security.Jwt
         private IEnumerable<Claim> SetClaims(User user)
         {
             if (user == null) throw new ArgumentNullException(nameof(user));
-            var claims = new List<Claim> { new Claim("ApplicationUserId", user.Id.ToString()) };
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimConstant.ApplicationUserId, user.Id.ToString())
+            };
+
+            foreach (var role in user.UserOperationClaims)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role.OperationClaim.Name));
+            }
             return claims;
         }
+
     }
 }

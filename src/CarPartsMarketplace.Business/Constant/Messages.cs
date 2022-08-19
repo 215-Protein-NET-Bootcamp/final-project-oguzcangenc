@@ -36,5 +36,6 @@
         public static string USER_LOCKED = "Hesabınız 10 Süre İle Dakika Kilitlendi";
         public static string ACCOUNT_ALREADY_ACTIVE = "Bu Hesap Zaten Aktif";
         public static string ACCOUNT_ACTIVATED = "Hesap Aktif Edildi";
+        public static string AUTHORIZATION_DENIED = "Yetkisiz Erişim";
     }
 }
