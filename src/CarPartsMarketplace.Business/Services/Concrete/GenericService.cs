@@ -2,6 +2,7 @@
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
 using CarPartsMarketplace.Core;
+using CarPartsMarketplace.Core.Aspects.Autofac.Validation;
 using CarPartsMarketplace.Core.Data;
 using CarPartsMarketplace.Core.Entities;
 using CarPartsMarketplace.Core.Utilities.Results;

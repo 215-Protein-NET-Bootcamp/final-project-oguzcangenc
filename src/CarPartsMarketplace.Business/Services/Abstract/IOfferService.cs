@@ -7,10 +7,9 @@ namespace CarPartsMarketplace.Business.Services.Abstract
     public interface IOfferService : IGenericService<OfferDto, CreateOfferDto, UpdateOfferDto>
     {
         Task<IDataResult<IEnumerable<UserProductOfferDto>>> GetUserOffers();
-
         Task<IDataResult<IEnumerable<UserProductOfferDto>>> GetUserProductOffers();
         Task<IResult> UndoOffer(UndoOfferDto undoOfferDto);
-
+        Task<IResult> OfferReturn(OfferReturnDto offerReturnDto);
     }
 
 }

@@ -10,6 +10,7 @@ using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 using CarPartsMarketplace.Entities;
 using CarPartsMarketplace.Entities.Dtos.Product;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace CarPartsMarketplace.Business.Services.Concrete
 {
@@ -100,6 +101,31 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             }
 
             await _unitOfWork.CompleteAsync();
+            return new SuccessResult(Messages.RECORD_UPDATED);
+        }
+
+        public async Task<IDataResult<IEnumerable<ProductDto>>> GetByCategoryId(int categoryId)
+        {
+            var categoryProduct = await _productRepository.GetAllByCategoryIdAsync(categoryId);
+            if (categoryProduct == null)
+                return new ErrorDataResult<IEnumerable<ProductDto>>(Messages.ID_NOT_EXISTENT);
+
+            return new SuccessDataResult<IEnumerable<ProductDto>>(_mapper.Map<IEnumerable<ProductDto>>(categoryProduct), Messages.RECORD_LISTED);
+        }
+
+
+        public async Task<IResult> SellProduct(int productId, int buyUserId)
+        {
+            var product = await _productRepository.GetAsync(x => x.Id == productId);
+            if (product.IsSold)
+                return new ErrorResult(Messages.PRODUCT_IS_SOLD);
+            if (product == null)
+                return new ErrorResult(Messages.UPDATE_ERROR);
+            product.IsSold = true;
+            product.IsOfferable = false;
+            product.PurchasingUserId = buyUserId;
+            await _unitOfWork.CompleteAsync();
+
             return new SuccessResult(Messages.RECORD_UPDATED);
         }
     }

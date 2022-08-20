@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
+using CarPartsMarketplace.Business.Validation.FluentValidation.Offer;
+using CarPartsMarketplace.Core.Aspects.Autofac.Validation;
 using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Data.Repositories.Abstract;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
@@ -29,7 +31,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
 
         public async Task<IDataResult<IEnumerable<UserProductOfferDto>>> GetUserOffers()
         {
-            var offers = await _offerRepository.GetAllAsync(x => x.UserId == CurrentUserId);
+            var offers = await _offerRepository.GetAllAsync(x => x.UserId == CurrentUserId && x.OfferReturn != Offer.OfferReturnType.Accept);
 
 
             return new SuccessDataResult<IEnumerable<UserProductOfferDto>>(_mapper.Map<IEnumerable<UserProductOfferDto>>(offers), Messages.RECORD_LISTED);
@@ -64,6 +66,40 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             await _unitOfWork.CompleteAsync();
 
             return new SuccessResult(Messages.UNDO_OFFER_SUCCESS);
+        }
+
+        [ValidationAspect(typeof(OfferReturnDtoValidator))]
+        public async Task<IResult> OfferReturn(OfferReturnDto offerReturnDto)
+        {
+            var offer = await _offerRepository.GetAsync(x => x.Id == offerReturnDto.OfferId);
+            if (offer == null)
+                return new ErrorResult(Messages.ID_NOT_EXISTENT);
+
+            if (offer.UserId == CurrentUserId)
+                return new ErrorResult(Messages.OFFER_USER_ERROR);
+
+            if (offerReturnDto.OfferReturn == Offer.OfferReturnType.Accept)
+            {
+
+                var response = await _productService.SellProduct(offer.ProductId, offer.UserId);
+                if (response.Success)
+                {
+                    offer.OfferReturn = offerReturnDto.OfferReturn;
+                    _offerRepository.Update(offer);
+                    await _unitOfWork.CompleteAsync();
+                    return new SuccessResult(response.Message);
+                }
+
+                return new ErrorResult(response.Message);
+            }
+            else
+            {
+                offer.OfferReturn = offerReturnDto.OfferReturn;
+                offer.Status = false;
+                _offerRepository.Update(offer);
+                await _unitOfWork.CompleteAsync();
+                return new ErrorResult(Messages.OFFER_REJECT);
+            }
         }
 
         public override async Task<IResult> Create(CreateOfferDto createResource)

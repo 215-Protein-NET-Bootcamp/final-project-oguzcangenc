@@ -3,7 +3,7 @@ using CarPartsMarketplace.Business.Aspect;
 using CarPartsMarketplace.Business.BackgroundJobs.Abstract;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
-using CarPartsMarketplace.Business.Validation.FluentValidation;
+using CarPartsMarketplace.Business.Validation.FluentValidation.Auth;
 using CarPartsMarketplace.Core;
 using CarPartsMarketplace.Core.Aspects.Autofac.Logging;
 using CarPartsMarketplace.Core.Aspects.Autofac.Performance;
@@ -142,6 +142,9 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             var resultToken = CreateAccessToken(userToCheck.Data);
             if (resultToken.Success)
             {
+                userToCheck.Data.AccessFailedCount=0;
+                _applicationUserService.Update(userToCheck.Data);
+                await _unitOfWork.CompleteAsync();
                 return new SuccessDataResult<AccessToken>(resultToken.Data, Messages.LOGIN_SUCCESS);
             }
 

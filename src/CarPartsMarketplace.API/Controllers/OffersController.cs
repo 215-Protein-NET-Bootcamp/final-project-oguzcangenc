@@ -2,6 +2,7 @@
 using CarPartsMarketplace.Entities.Dtos.Offer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static CarPartsMarketplace.Entities.Offer;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,7 +18,7 @@ namespace CarPartsMarketplace.API.Controllers
             _offerService = offerService;
         }
         [Authorize]
-        [HttpGet("my-offers")]
+        [HttpGet("user-offers")]
         public async Task<IActionResult> GetUserOffers()
         {
             var response = await _offerService.GetUserOffers();
@@ -47,6 +48,19 @@ namespace CarPartsMarketplace.API.Controllers
         public async Task<IActionResult> UndoOffer([FromQuery] UndoOfferDto offerDto)
         {
             var response = await _offerService.UndoOffer(offerDto);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(response);
+
+        }
+        [Authorize]
+        [HttpGet("return-offer")]
+        public async Task<IActionResult> ReturnOffer([FromQuery] OfferReturnDto offerReturnDto)
+        {
+            var response = await _offerService.OfferReturn(offerReturnDto);
             if (response.Success)
             {
                 return Ok(response);

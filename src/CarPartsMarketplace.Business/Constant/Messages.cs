@@ -47,5 +47,8 @@
         public static string UPDATE_AUTH_ERROR = "Bu ürünü düzenleyemezsiniz. Sadece kendi ürünlerinizi düzenleyebilirsiniz.";
         public static string UNDO_OFFER_ERROR = "Bu teklif size ait değil";
         public static string UNDO_OFFER_SUCCESS = "Teklifiniz Geri Çekilmiştir";
+        public static string OFFER_USER_ERROR = "Teklif size ait veya sistem hatası";
+        public static string OFFER_ACCEPT_SUCCESSFULY = "Teklif Kabul Edildi. Ürün Satıldı";
+        public static string OFFER_REJECT = "Teklif Reddedildi";
     }
 }

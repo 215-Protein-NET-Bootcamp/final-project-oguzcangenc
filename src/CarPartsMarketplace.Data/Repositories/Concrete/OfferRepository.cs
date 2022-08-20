@@ -24,8 +24,6 @@ public class OfferRepository : EfGenericRepository<Offer, AppDbContext>, IOfferR
 
     public async Task<IEnumerable<Offer>> GetMyProductOffers(int userId)
     {
-        
-        //Kendi ürünlerini al
         var userProduct = await _dbContext.Products
             .Where(x => x.IsOfferable == true && x.UserId == userId && x.IsSold == false).Include(x => x.Offers)
             .SelectMany(o => o.Offers).ToListAsync();

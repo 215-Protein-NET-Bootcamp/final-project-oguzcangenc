@@ -35,6 +35,16 @@ namespace CarPartsMarketplace.API.Controllers
             }
             return BadRequest(response);
         }
+        [HttpGet("category-by-id")]
+        public async Task<IActionResult> GetByCategoryId(int id)
+        {
+            var response = await _productService.GetByCategoryId(id);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            return BadRequest(response);
+        }
 
         [Authorize]
         [HttpPost]

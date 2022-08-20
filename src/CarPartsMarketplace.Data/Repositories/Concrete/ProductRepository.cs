@@ -32,6 +32,11 @@ public class ProductRepository : EfGenericRepository<Product, AppDbContext>, IPr
 
     }
 
+    public async Task<IEnumerable<Product>> GetAllByCategoryIdAsync(int categoryId)
+    {
+        return await _dbContext.Products.Where(x => x.CategoryId == categoryId).AsNoTracking().ToListAsync();
+    }
+
     public override async Task<IEnumerable<Product>> GetAllAsync(Expression<Func<Product, bool>>? filter = null)
     {
         var product = await _dbContext.Products

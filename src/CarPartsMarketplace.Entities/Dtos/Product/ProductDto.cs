@@ -17,7 +17,7 @@ namespace CarPartsMarketplace.Entities.Dtos.Product
         public bool IsOfferable { get; set; }
         public decimal Price { get; set; }
         public bool IsSold { get; set; }
-
+        public int PurchasingUserId { get; set; }
         public  UserDto User { get; set; }
         public  CategoryDto Category { get; set; }
         public  BrandDto Brand { get; set; }

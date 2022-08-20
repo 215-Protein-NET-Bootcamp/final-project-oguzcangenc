@@ -13,7 +13,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers().AddJsonOptions(x =>
+{
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 builder.Host.UseSerilogExtension();
 
