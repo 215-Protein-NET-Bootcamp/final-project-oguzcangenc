@@ -12,10 +12,10 @@ namespace CarPartsMarketplace.Business.Services.Concrete
 {
     public abstract class GenericService<TMainDto, TCreateDto, TUpdateDto, TEntity> : IGenericService<TMainDto, TCreateDto, TUpdateDto> where TEntity : BaseEntity, IEntity, new()
     {
-        private readonly IEfGenericRepository<TEntity> _baseRepository;
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        protected readonly IEfGenericRepository<TEntity> _baseRepository;
+        protected IMapper _mapper;
+        protected IUnitOfWork _unitOfWork;
+        protected readonly IHttpContextAccessor _httpContextAccessor;
 
         protected GenericService(IEfGenericRepository<TEntity> baseRepository, IMapper mapper, IUnitOfWork unitOfWork, IHttpContextAccessor httpContextAccessor)
         {

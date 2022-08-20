@@ -11,6 +11,15 @@ namespace CarPartsMarketplace.Data.Context.EntityFramework
         {
 
         }
+        public DbSet<User> ApplicationUsers { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Offer> Offers { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<Usage> Usages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +31,7 @@ namespace CarPartsMarketplace.Data.Context.EntityFramework
             modelBuilder.ApplyConfiguration(new CategoryConfig());
             modelBuilder.ApplyConfiguration(new ColorConfig());
             modelBuilder.ApplyConfiguration(new UsageConfig());
+            modelBuilder.ApplyConfiguration(new OfferConfig());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -54,15 +64,7 @@ namespace CarPartsMarketplace.Data.Context.EntityFramework
             return base.SaveChangesAsync(cancellationToken);
         }
 
-        public DbSet<User> ApplicationUsers { get; set; }
-        public DbSet<Brand> Brands { get; set; }
-        public DbSet<Color> Colors { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Offer> Offers { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<OperationClaim> OperationClaims { get; set; }
-        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
-        public DbSet<Usage> Usages { get; set; }
+      
 
     }
 }

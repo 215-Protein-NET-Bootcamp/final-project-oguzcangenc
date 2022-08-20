@@ -2,8 +2,6 @@
 using CarPartsMarketplace.Core.Utilities.Results;
 using Microsoft.AspNetCore.Http;
 using CarPartsMarketplace.Core.Utilities.FileHelper.Abstract;
-using System.IO;
-using System.Drawing;
 
 namespace CarPartsMarketplace.Core.Utilities.FileHelper.Concrete
 {

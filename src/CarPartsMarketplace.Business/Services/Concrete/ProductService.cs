@@ -59,6 +59,10 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 var trackEntity = await _productRepository.GetByIdAsync(id);
                 if (trackEntity == null)
                     return new ErrorResult(Messages.RECORD_NOT_FOUND);
+
+                if (trackEntity.UserId != CurrentUserId)
+                    return new ErrorResult(Messages.UPDATE_AUTH_ERROR);
+
                 var res = _mapper.Map(updateResource, trackEntity);
                 _productRepository.Update(trackEntity);
                 await _unitOfWork.CompleteAsync();

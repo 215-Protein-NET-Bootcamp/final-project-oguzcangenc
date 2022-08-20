@@ -15,6 +15,7 @@ namespace CarPartsMarketplace.Entities
         public bool IsOfferable { get; set; }
         public bool IsSold { get; set; }
         public int UserId { get; set; }
+        public int PurchasingUserId { get; set; }
 
         public virtual Usage Usage { get; set; }
         public virtual Category Category { get; set; }

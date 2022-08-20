@@ -8,5 +8,6 @@ namespace CarPartsMarketplace.Business.Services.Abstract
         Task<IResult> AddAsync(User user);
         IResult Update(User user);
         Task<IDataResult<User>> GetByMail(string mail);
+        Task<IDataResult<User>> GetById(int Id);
     }
 }

@@ -4,6 +4,7 @@ using CarPartsMarketplace.Business.BackgroundJobs.Abstract;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
 using CarPartsMarketplace.Business.Validation.FluentValidation;
+using CarPartsMarketplace.Core;
 using CarPartsMarketplace.Core.Aspects.Autofac.Logging;
 using CarPartsMarketplace.Core.Aspects.Autofac.Performance;
 using CarPartsMarketplace.Core.Aspects.Autofac.Validation;
@@ -14,6 +15,7 @@ using CarPartsMarketplace.Core.Utilities.Security.Hashing;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 using CarPartsMarketplace.Entities.Dtos.ApplicationUser;
+using CarPartsMarketplace.Entities.Dtos.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
@@ -47,6 +49,30 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         {
             var accessToken = _tokenHelper.CreateToken<AccessToken>(user);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.TOKEN_GENERATE);
+        }
+
+        public async Task<IResult> ChangePassword(UserForChangePasswordDto changePasswordDto)
+        {
+            var user = (await _applicationUserService.GetById(CurrentUserId)).Data;
+            if (!HashingHelper.VerifyPasswordHash(changePasswordDto.OldPassword, user.PasswordHash, user.PasswordSalt))
+            {
+                return new ErrorResult(Messages.OLD_PASSWORD_INCORRECT);
+
+            }
+
+            HashingHelper.CreatePasswordHash(changePasswordDto.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            var result = _applicationUserService.Update(user);
+            await _unitOfWork.CompleteAsync();
+            var response = _mapper.Map<UserDto>(user);
+            if (result.Success)
+            {
+                return new SuccessDataResult<UserDto>(response, Messages.CHANGE_PASSWORD_SUCCESS);
+
+            }
+            return new ErrorResult(Messages.CHANGE_PASSWORD_ERROR);
+
         }
 
         public async Task<IResult> UserExists(string mail)
@@ -213,6 +239,27 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 return new SuccessResult(Messages.EMAIL_CONFIRMED);
             }
             return new ErrorResult(Messages.EMAIL_NOT_CONFIRMED);
+        }
+
+        protected int CurrentUserId
+        {
+            get
+            {
+                if (_httpContextAccessor.HttpContext != null)
+                {
+                    var claimValue = _httpContextAccessor.HttpContext?.User?.FindFirst(t => t.Type == ClaimConstant.ApplicationUserId);
+                    if (claimValue != null)
+                    {
+                        return Convert.ToInt32(claimValue.Value);
+                    }
+                    return 0;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            set => throw new NotImplementedException();
         }
     }
 }

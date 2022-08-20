@@ -8,11 +8,11 @@ namespace CarPartsMarketplace.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsageController : ControllerBase
+    public class UsagesController : ControllerBase
     {
         private readonly IUsageService _usageService
             ;
-        public UsageController(IUsageService usageService)
+        public UsagesController(IUsageService usageService)
         {
             _usageService = usageService;
         }
@@ -42,6 +42,7 @@ namespace CarPartsMarketplace.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post([FromBody] CreateUsageDto createUsageDto)
         {
             var result = await _usageService.Create(createUsageDto);
@@ -55,7 +56,6 @@ namespace CarPartsMarketplace.API.Controllers
         }
 
         [Authorize]
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] UpdateUsageDto updateUsageDto)
         {
@@ -69,7 +69,6 @@ namespace CarPartsMarketplace.API.Controllers
         }
 
         [Authorize]
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

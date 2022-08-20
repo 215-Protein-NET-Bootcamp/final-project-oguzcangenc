@@ -15,6 +15,7 @@ namespace CarPartsMarketplace.Data.Config
             builder.Property(x => x.ImageUrl).IsRequired();
             builder.Property(x => x.Price).IsRequired().HasColumnType("decimal(18,2)");
             builder.Property(x => x.IsOfferable).HasDefaultValue(false);
+            builder.Property(p => p.PurchasingUserId).HasDefaultValue(0);
             builder.Property(x => x.IsSold).HasDefaultValue(false);
 
             builder.HasData(new List<Product>()

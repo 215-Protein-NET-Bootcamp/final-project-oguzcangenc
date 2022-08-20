@@ -40,6 +40,7 @@ namespace CarPartsMarketplace.Business.Mapping.AutoMapper
             CreateMap<OfferDto, Offer>().ReverseMap();
             CreateMap<CreateOfferDto, Offer>().ReverseMap();
             CreateMap<UpdateOfferDto, Offer>().ReverseMap();
+            CreateMap<UserProductOfferDto, Offer>().ReverseMap();
 
             CreateMap<UsageDto, Usage>().ReverseMap();
             CreateMap<CreateUsageDto, Usage>().ReverseMap();

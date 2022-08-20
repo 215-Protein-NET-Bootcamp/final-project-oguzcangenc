@@ -40,5 +40,12 @@
         public static string FILE_TYPE_IS_LARGER_THAN_ALLOWED = "Dosya Boyutu Sınırı Aşıyor.";
         public static string FILE_TYPE_IS_NOT_ALLOWED = "Desteklemeyen Görsel Türü";
         public static string RECORD_NOT_FOUND = "Kayıt Bulunmadı";
+        public static string NO_OFFER = "Bu ürüne teklif verilemez. Bu ürüne zaten teklif verilmiş";
+        public static string PRODUCT_IS_SOLD = "Bu ürün satılmıştır";
+        public static string CANNOT_OWN_PRODUCT = "Kendi Ürünlerinize Teklif Veremezsiniz.";
+        public static string OFFER_HIGHER_PRODUCT = "Teklif ürün fiyatından yüksek olamaz";
+        public static string UPDATE_AUTH_ERROR = "Bu ürünü düzenleyemezsiniz. Sadece kendi ürünlerinizi düzenleyebilirsiniz.";
+        public static string UNDO_OFFER_ERROR = "Bu teklif size ait değil";
+        public static string UNDO_OFFER_SUCCESS = "Teklifiniz Geri Çekilmiştir";
     }
 }

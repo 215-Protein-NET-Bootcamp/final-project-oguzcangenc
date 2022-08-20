@@ -4,7 +4,7 @@ namespace CarPartsMarketplace.Entities.Dtos.Offer;
 
 public class UpdateOfferDto : BaseDto
 {
-    public int ProductId { get; set; }
+    public bool Status { get; set; }
+    public bool IsPercentPrice { get; set; }
     public decimal Price { get; set; }
-
 }

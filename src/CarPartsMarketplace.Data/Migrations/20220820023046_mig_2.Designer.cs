@@ -3,6 +3,7 @@ using System;
 using CarPartsMarketplace.Data.Context.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarPartsMarketplace.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220820023046_mig_2")]
+    partial class mig_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,20 +67,20 @@ namespace CarPartsMarketplace.Data.Migrations
                         {
                             Id = 1,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(4966),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(3773),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(4976),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(4977),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(3780),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(3782),
                             Name = "admin"
                         },
                         new
                         {
                             Id = 2,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(4982),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(3786),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(4983),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(4983),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(3787),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(3788),
                             Name = "customer"
                         });
                 });
@@ -159,17 +161,17 @@ namespace CarPartsMarketplace.Data.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(8674),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(7258),
                             Email = "admin@admin.com",
                             EmailConfirmation = true,
                             FirstName = "Admin",
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(8676),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(7261),
                             LastName = "Admin",
                             LockoutEnabled = false,
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(8677),
-                            PasswordHash = new byte[] { 182, 131, 172, 82, 28, 91, 201, 162, 36, 242, 204, 213, 253, 9, 1, 27, 204, 97, 216, 106, 185, 89, 58, 166, 226, 23, 59, 229, 181, 239, 232, 24, 13, 138, 17, 178, 250, 8, 30, 49, 46, 153, 48, 144, 57, 26, 42, 132, 11, 117, 229, 189, 224, 7, 3, 56, 239, 9, 16, 254, 19, 134, 101, 245 },
-                            PasswordSalt = new byte[] { 171, 161, 143, 254, 245, 3, 147, 230, 167, 89, 253, 246, 242, 237, 213, 222, 51, 92, 18, 129, 138, 242, 21, 90, 148, 188, 118, 85, 190, 79, 175, 66, 246, 96, 57, 241, 215, 163, 127, 200, 97, 205, 189, 138, 0, 115, 188, 175, 77, 182, 119, 114, 32, 142, 247, 199, 57, 68, 186, 223, 214, 109, 187, 58, 197, 193, 215, 25, 222, 168, 158, 238, 12, 92, 225, 249, 191, 117, 65, 9, 62, 74, 14, 94, 99, 193, 138, 107, 64, 34, 154, 60, 13, 195, 31, 162, 1, 154, 153, 214, 59, 102, 120, 170, 195, 38, 205, 206, 66, 254, 172, 9, 145, 230, 65, 209, 32, 40, 58, 213, 9, 191, 23, 173, 143, 82, 87, 242 }
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(7262),
+                            PasswordHash = new byte[] { 98, 240, 78, 181, 173, 196, 68, 128, 193, 240, 191, 132, 36, 117, 26, 89, 144, 152, 129, 221, 69, 229, 113, 0, 188, 217, 213, 155, 153, 182, 134, 5, 11, 215, 103, 91, 145, 19, 156, 92, 59, 20, 174, 208, 109, 203, 22, 119, 168, 247, 228, 123, 77, 1, 25, 24, 99, 237, 225, 120, 253, 17, 239, 197 },
+                            PasswordSalt = new byte[] { 33, 192, 61, 158, 101, 59, 83, 145, 12, 147, 18, 35, 96, 244, 7, 222, 144, 249, 30, 118, 194, 237, 109, 58, 227, 21, 114, 2, 238, 161, 15, 211, 49, 102, 209, 56, 251, 107, 152, 136, 203, 122, 53, 178, 125, 14, 7, 154, 144, 90, 245, 79, 140, 50, 28, 218, 100, 117, 184, 86, 146, 204, 135, 240, 246, 139, 58, 10, 14, 135, 31, 219, 173, 251, 171, 162, 208, 1, 125, 218, 10, 1, 96, 30, 130, 77, 158, 65, 75, 236, 198, 119, 126, 168, 72, 11, 183, 52, 43, 40, 80, 176, 193, 118, 95, 181, 101, 165, 7, 26, 233, 239, 70, 108, 18, 134, 91, 228, 32, 58, 205, 136, 98, 148, 28, 50, 16, 167 }
                         });
                 });
 
@@ -221,10 +223,10 @@ namespace CarPartsMarketplace.Data.Migrations
                         {
                             Id = 1,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(9802),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(8355),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(9803),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 698, DateTimeKind.Utc).AddTicks(9801),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(8356),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 762, DateTimeKind.Utc).AddTicks(8354),
                             OperationClaimId = 1,
                             UserId = 1
                         });
@@ -274,30 +276,30 @@ namespace CarPartsMarketplace.Data.Migrations
                         {
                             Id = 1,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2932),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(1114),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2934),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2933),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(1115),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(1115),
                             Name = "Dayco"
                         },
                         new
                         {
                             Id = 2,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2937),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(1120),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2938),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2937),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(1121),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(1121),
                             Name = "Ngk"
                         },
                         new
                         {
                             Id = 3,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2939),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(1122),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2940),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2939),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(1123),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(1123),
                             Name = "Bosch"
                         });
                 });
@@ -346,30 +348,30 @@ namespace CarPartsMarketplace.Data.Migrations
                         {
                             Id = 1,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(4059),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(2387),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(4061),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(4060),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(2388),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(2388),
                             Name = "Triger Kayışları"
                         },
                         new
                         {
                             Id = 2,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(4064),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(2393),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(4065),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(4064),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(2394),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(2394),
                             Name = "Ateşleme"
                         },
                         new
                         {
                             Id = 3,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(4066),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(2395),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(4067),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(4066),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(2396),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(2396),
                             Name = "Fren Sistemi"
                         });
                 });
@@ -418,20 +420,20 @@ namespace CarPartsMarketplace.Data.Migrations
                         {
                             Id = 1,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(5130),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(3705),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(5132),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(5131),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(3706),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(3706),
                             Name = "Siyah"
                         },
                         new
                         {
                             Id = 2,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(5136),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(3710),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(5137),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(5136),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(3711),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(3711),
                             Name = "Beyaz"
                         });
                 });
@@ -448,27 +450,19 @@ namespace CarPartsMarketplace.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("Date")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastActivity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
@@ -477,9 +471,7 @@ namespace CarPartsMarketplace.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<bool>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(true);
+                        .HasColumnType("boolean");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -551,9 +543,7 @@ namespace CarPartsMarketplace.Data.Migrations
                         .HasColumnType("numeric(18,2)");
 
                     b.Property<int>("PurchasingUserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
+                        .HasColumnType("integer");
 
                     b.Property<int>("UsageId")
                         .HasColumnType("integer");
@@ -583,14 +573,14 @@ namespace CarPartsMarketplace.Data.Migrations
                             CategoryId = 1,
                             ColorId = 1,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2471),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(547),
                             Description = "Dayco Triger Seti 1.2 16V Dacıa Logan Sandero Clio Kango Modus Symbol Twıngo",
                             ImageUrl = "placeholder.jpg",
                             IsDeleted = false,
                             IsOfferable = true,
                             IsSold = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2473),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2473),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(549),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(550),
                             Name = "Dayco Triger Seti 1.2 16V",
                             Price = 1500m,
                             PurchasingUserId = 0,
@@ -604,14 +594,14 @@ namespace CarPartsMarketplace.Data.Migrations
                             CategoryId = 2,
                             ColorId = 2,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2479),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(557),
                             Description = "Kutu İçeriği: 4 adet NGK Spark Plugs CNG/LPG BKR-GAS 7987 İnce Paso Kalem Buji",
                             ImageUrl = "placeholder.jpg",
                             IsDeleted = false,
                             IsOfferable = true,
                             IsSold = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2480),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2480),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(557),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(558),
                             Name = "Ngk Ateşleme Lpg Buji Takımı",
                             Price = 358m,
                             PurchasingUserId = 0,
@@ -625,14 +615,14 @@ namespace CarPartsMarketplace.Data.Migrations
                             CategoryId = 3,
                             ColorId = 1,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2482),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(602),
                             Description = "On Fren Dısk Havalandırmalı Bmw 1 Serısı E81 E82 E87 E88 03-12 3 Serısı E90 E91 318d 318ı 320sı 320d 320ı 325sı 325xı 05-11 Bosch 0986479216",
                             ImageUrl = "placeholder.jpg",
                             IsDeleted = false,
                             IsOfferable = false,
                             IsSold = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2483),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(2483),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(604),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(605),
                             Name = "Bosch On Fren Dısk+Balata Set Ferrari",
                             Price = 657m,
                             PurchasingUserId = 0,
@@ -683,20 +673,20 @@ namespace CarPartsMarketplace.Data.Migrations
                         {
                             Id = 1,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(6116),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(4669),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(6117),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(6117),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(4671),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(4670),
                             Name = "Sıfır"
                         },
                         new
                         {
                             Id = 2,
                             CreatedAt = 1,
-                            CreatedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(6120),
+                            CreatedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(4675),
                             IsDeleted = false,
-                            LastActivity = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(6121),
-                            ModifiedDate = new DateTime(2022, 8, 20, 10, 2, 56, 699, DateTimeKind.Utc).AddTicks(6120),
+                            LastActivity = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(4676),
+                            ModifiedDate = new DateTime(2022, 8, 20, 2, 30, 45, 763, DateTimeKind.Utc).AddTicks(4675),
                             Name = "İkinci El"
                         });
                 });

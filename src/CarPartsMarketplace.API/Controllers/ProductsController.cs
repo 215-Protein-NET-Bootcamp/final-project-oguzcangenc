@@ -74,11 +74,5 @@ namespace CarPartsMarketplace.API.Controllers
             return BadRequest(result);
         }
 
-        [Authorize]
-        // DELETE api/<ProductController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

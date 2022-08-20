@@ -1,28 +1,24 @@
 ﻿using CarPartsMarketplace.Business.Services.Abstract;
-using CarPartsMarketplace.Entities.Dtos.Color;
+using CarPartsMarketplace.Entities.Dtos.Brand;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CarPartsMarketplace.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ColorController : ControllerBase
+    public class BrandsController : ControllerBase
     {
-        // GET: api/<CategoryController>
-        private readonly IColorService _colorService
-            ;
-        public ColorController(IColorService colorService)
+        private readonly IBrandService _brandService;
+        public BrandsController(IBrandService brandService)
         {
-            _colorService = colorService;
+            _brandService = brandService;
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var response = await _colorService.GetAll();
+            var response = await _brandService.GetAll();
             if (response.Success)
             {
                 return Ok(response);
@@ -33,7 +29,7 @@ namespace CarPartsMarketplace.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var result = await _colorService.Get(id);
+            var result = await _brandService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -42,11 +38,12 @@ namespace CarPartsMarketplace.API.Controllers
 
             return NotFound(result);
         }
+        
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateColorDto brandDto)
+        public async Task<IActionResult> Post([FromBody] CreateBrandDto brandDto)
         {
-            var result = await _colorService.Create(brandDto);
+            var result = await _brandService.Create(brandDto);
             if (result.Success)
             {
                 return Ok(result);
@@ -58,9 +55,9 @@ namespace CarPartsMarketplace.API.Controllers
 
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] UpdateColorDto updateColorDto)
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateBrandDto updateBrandDto)
         {
-            var result = await _colorService.Update(id, updateColorDto);
+            var result = await _brandService.Update(id, updateBrandDto);
             if (result.Success)
             {
                 return Ok(result);
@@ -73,7 +70,7 @@ namespace CarPartsMarketplace.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _colorService.Delete(id);
+            var result = await _brandService.Delete(id);
             if (result.Success)
             {
                 return Ok(result);
