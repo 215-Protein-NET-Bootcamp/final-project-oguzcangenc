@@ -1,13 +1,13 @@
 ﻿using System.Linq.Expressions;
 using CarPartsMarketplace.Core.Data.EntityFramework;
+using CarPartsMarketplace.Core.Entities;
 using CarPartsMarketplace.Data.Context.EntityFramework;
 using CarPartsMarketplace.Data.Repositories.Abstract;
-using CarPartsMarketplace.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarPartsMarketplace.Data.Repositories.Concrete
 {
-    public class UserRepository : EfGenericRepository<ApplicationUser, AppDbContext>, IUserRepository
+    public class UserRepository : EfGenericRepository<User, AppDbContext>, IUserRepository
     {
         private readonly AppDbContext _dbContext;
 
@@ -16,7 +16,7 @@ namespace CarPartsMarketplace.Data.Repositories.Concrete
             _dbContext = dbContext;
         }
 
-        public override async Task<ApplicationUser?> GetAsync(Expression<Func<ApplicationUser, bool>>? filter = null)
+        public override async Task<User?> GetAsync(Expression<Func<User, bool>>? filter = null)
         {
           return await _dbContext.ApplicationUsers.Where(filter).Include(x=>x.UserOperationClaims).ThenInclude(x=>x.OperationClaim).FirstOrDefaultAsync();
         }

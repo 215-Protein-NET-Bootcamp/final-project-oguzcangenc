@@ -25,7 +25,7 @@ public class ProductRepository : EfGenericRepository<Product, AppDbContext>, IPr
             .Include(x => x.Category)
             .Include(x => x.Color)
             .Include(x => x.Usage)
-            .Include(x => x.ApplicationUser)
+            .Include(x => x.User)
             .FirstOrDefaultAsync();
         return product;
 
@@ -39,7 +39,7 @@ public class ProductRepository : EfGenericRepository<Product, AppDbContext>, IPr
             .Include(x => x.Category)
             .Include(x => x.Color)
             .Include(x => x.Usage)
-            .Include(x => x.ApplicationUser)
+            .Include(x => x.User)
             .ToListAsync();
 
         return product;

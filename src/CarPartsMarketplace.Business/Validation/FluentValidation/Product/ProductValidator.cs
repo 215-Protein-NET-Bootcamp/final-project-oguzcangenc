@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using CarPartsMarketplace.Business.Constant;
+using FluentValidation;
 using CarPartsMarketplace.Entities.Dtos.Product;
 using Microsoft.AspNetCore.Http;
 
@@ -23,11 +24,11 @@ namespace CarPartsMarketplace.Business.Validation.FluentValidation.Product
     {
         public ProductImageFileValidator()
         {
-            RuleFor(x => x.Length).NotNull().LessThanOrEqualTo(400)
-                .WithMessage("File size is larger than allowed");
+            RuleFor(x => x.Length).NotNull().LessThanOrEqualTo(400000)
+                .WithMessage(Messages.FILE_TYPE_IS_LARGER_THAN_ALLOWED);
 
             RuleFor(x => x.ContentType).NotNull().Must(x => x.Equals("image/jpeg") || x.Equals("image/jpg") || x.Equals("image/png"))
-                .WithMessage("File type is larger than allowed");
+                .WithMessage(Messages.FILE_TYPE_IS_NOT_ALLOWED);
         }
     }
 }

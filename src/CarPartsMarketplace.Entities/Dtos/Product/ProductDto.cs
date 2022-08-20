@@ -11,14 +11,14 @@ namespace CarPartsMarketplace.Entities.Dtos.Product
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int ApplicationUserId { get; set; }
-        public Uri ImageUrl { get; set; }
+        public int UserId { get; set; }
+        public string ImageUrl { get; set; }
         public string Description { get; set; }
         public bool IsOfferable { get; set; }
         public decimal Price { get; set; }
         public bool IsSold { get; set; }
 
-        public  ApplicationUserDto ApplicationUser { get; set; }
+        public  UserDto User { get; set; }
         public  CategoryDto Category { get; set; }
         public  BrandDto Brand { get; set; }
         public  ColorDto Color { get; set; }

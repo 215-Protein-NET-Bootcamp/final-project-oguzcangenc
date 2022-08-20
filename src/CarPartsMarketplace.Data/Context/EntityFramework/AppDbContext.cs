@@ -15,6 +15,13 @@ namespace CarPartsMarketplace.Data.Context.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new OperationClaimConfig());
+            modelBuilder.ApplyConfiguration(new ApplicationUserConfig());
+            modelBuilder.ApplyConfiguration(new UserOperationClaimConfig());
+            modelBuilder.ApplyConfiguration(new ProductConfig());
+            modelBuilder.ApplyConfiguration(new BrandConfig());
+            modelBuilder.ApplyConfiguration(new CategoryConfig());
+            modelBuilder.ApplyConfiguration(new ColorConfig());
+            modelBuilder.ApplyConfiguration(new UsageConfig());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -47,7 +54,7 @@ namespace CarPartsMarketplace.Data.Context.EntityFramework
             return base.SaveChangesAsync(cancellationToken);
         }
 
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<User> ApplicationUsers { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<Category> Categories { get; set; }

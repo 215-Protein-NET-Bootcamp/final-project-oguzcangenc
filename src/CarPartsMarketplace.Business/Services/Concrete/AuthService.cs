@@ -8,11 +8,11 @@ using CarPartsMarketplace.Core.Aspects.Autofac.Logging;
 using CarPartsMarketplace.Core.Aspects.Autofac.Performance;
 using CarPartsMarketplace.Core.Aspects.Autofac.Validation;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
+using CarPartsMarketplace.Core.Entities;
 using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Core.Utilities.Security.Hashing;
 using CarPartsMarketplace.Core.Utilities.Security.Jwt;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
-using CarPartsMarketplace.Entities;
 using CarPartsMarketplace.Entities.Dtos.ApplicationUser;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -43,7 +43,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             _jobManager = jobManager;
             _httpContextAccessor = httpContextAccessor;
         }
-        public IDataResult<AccessToken> CreateAccessToken(ApplicationUser user)
+        public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var accessToken = _tokenHelper.CreateToken<AccessToken>(user);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.TOKEN_GENERATE);
@@ -145,7 +145,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             _applicationUserService.Update(user.Data);
             await _unitOfWork.CompleteAsync();
             await _jobManager.AccountLocoutActivationMailJob(accountActivationDto.Email);
-            
+
             return new SuccessResult(Messages.ACCOUNT_ACTIVATED);
         }
 
@@ -156,13 +156,13 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         /// <returns></returns>
         [LogAspect(typeof(FileLogger))]
         [ValidationAspect(typeof(UserForRegisterDtoValidator))]
-        public async Task<IDataResult<ApplicationUserDto>> Register(UserForRegisterDto userForRegisterDto)
+        public async Task<IDataResult<UserDto>> Register(UserForRegisterDto userForRegisterDto)
         {
             var userExist = await UserExists(userForRegisterDto.Email);
 
-            if (!userExist.Success) return new ErrorDataResult<ApplicationUserDto>(Messages.USER_ALREADY_EXISTS);
+            if (!userExist.Success) return new ErrorDataResult<UserDto>(Messages.USER_ALREADY_EXISTS);
 
-            var user = _mapper.Map<ApplicationUser>(userForRegisterDto);
+            var user = _mapper.Map<User>(userForRegisterDto);
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out byte[]? passwordHash,
                 out byte[]? passwordSalt);
             user.LastActivity = DateTime.UtcNow;
@@ -170,6 +170,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             user.PasswordSalt = passwordSalt;
             user.EmailConfirmation = false;
             user.ModifiedDate = DateTime.UtcNow;
+
             await _applicationUserService.AddAsync(user);
             await _jobManager.RegisterUserActivationMailJobAsync(new RegisterUserWelcomeMailJobDto()
             {
@@ -178,7 +179,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 LastName = user.LastName
             }, _httpContextAccessor.HttpContext.Request.Host.Value);
 
-            return new SuccessDataResult<ApplicationUserDto>(_mapper.Map<ApplicationUserDto>(user),
+            return new SuccessDataResult<UserDto>(_mapper.Map<UserDto>(user),
                 Messages.REGISTER_USER_SUCCESSFULY);
 
         }
@@ -208,7 +209,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 _applicationUserService.Update(user.Data);
                 await _unitOfWork.CompleteAsync();
                 await _jobManager.RegisterUserActivationSuccessfulyMailJobAsync(new RegisterUserActivationSuccessfulyDto()
-                    { Email = userEmailConfirmationDto.Email });
+                { Email = userEmailConfirmationDto.Email });
                 return new SuccessResult(Messages.EMAIL_CONFIRMED);
             }
             return new ErrorResult(Messages.EMAIL_NOT_CONFIRMED);

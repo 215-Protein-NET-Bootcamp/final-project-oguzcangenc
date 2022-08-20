@@ -37,5 +37,8 @@
         public static string ACCOUNT_ALREADY_ACTIVE = "Bu Hesap Zaten Aktif";
         public static string ACCOUNT_ACTIVATED = "Hesap Aktif Edildi";
         public static string AUTHORIZATION_DENIED = "Yetkisiz Erişim";
+        public static string FILE_TYPE_IS_LARGER_THAN_ALLOWED = "Dosya Boyutu Sınırı Aşıyor.";
+        public static string FILE_TYPE_IS_NOT_ALLOWED = "Desteklemeyen Görsel Türü";
+        public static string RECORD_NOT_FOUND = "Kayıt Bulunmadı";
     }
 }

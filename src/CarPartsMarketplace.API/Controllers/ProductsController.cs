@@ -1,19 +1,16 @@
 ﻿using CarPartsMarketplace.Business.Services.Abstract;
-using CarPartsMarketplace.Business.Services.Concrete;
 using CarPartsMarketplace.Entities.Dtos.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CarPartsMarketplace.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
-        public ProductController(IProductService productService)
+        public ProductsController(IProductService productService)
         {
             _productService = productService;
         }
@@ -28,7 +25,6 @@ namespace CarPartsMarketplace.API.Controllers
             return BadRequest(response);
         }
 
-        // GET api/<ProductController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -40,7 +36,7 @@ namespace CarPartsMarketplace.API.Controllers
             return BadRequest(response);
         }
 
-       [Authorize]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] CreateProductDto createProductDto)
         {
@@ -52,15 +48,33 @@ namespace CarPartsMarketplace.API.Controllers
 
             return BadRequest(response);
         }
-        [Authorize]
 
-        // PUT api/<ProductController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+
+        [HttpPost("edit-product-image")]
+        public async Task<IActionResult> EditProductImage(int productId, [FromForm] EditProductImageDto formFile)
         {
-        }
-        [Authorize]
+            var response = await _productService.EditProductImage(productId,formFile);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
 
+            return BadRequest(response);
+        }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateProductDto updateProductDto)
+        {
+            var result = await _productService.Update(id, updateProductDto);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [Authorize]
         // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)

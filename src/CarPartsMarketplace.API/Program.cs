@@ -4,12 +4,12 @@ using CarPartsMarketplace.API.Extensions.StartupExtension;
 using CarPartsMarketplace.API.Middleware;
 using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
 using CarPartsMarketplace.Business.DependencyResolvers.Autofac;
-using CarPartsMarketplace.Business.Tools;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
 using CarPartsMarketplace.Core.DependencyResolvers;
 using CarPartsMarketplace.Core.Extensions;
 using CarPartsMarketplace.Data.Context.EntityFramework;
 using Hangfire;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,11 +51,8 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    if (dataContext.Database.EnsureCreated())
-    {
-        SeedDatabase.Seed(dataContext);
-        Console.WriteLine("-----> Seed Database");
-    }
+    dataContext.Database.Migrate();
+
 }
 app.UseSwagger();
 

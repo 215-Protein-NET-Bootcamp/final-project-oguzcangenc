@@ -70,7 +70,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                     return new ErrorDataResult<TUpdateDto>(Messages.ID_NOT_EXISTENT);
 
                 tempEntity = _mapper.Map(updateResource, tempEntity);
-                _baseRepository.Update(tempEntity);
+                //_baseRepository.Update(tempEntity);
                 await _unitOfWork.CompleteAsync();
 
                 var resource = _mapper.Map<TEntity, TUpdateDto>(tempEntity);

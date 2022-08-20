@@ -2,7 +2,7 @@
 
 namespace CarPartsMarketplace.Entities.Dtos.ApplicationUser
 {
-    public class ApplicationUserDto : IDto
+    public class UserDto : IDto
     {
         public int Id { get; set; }
         public string Email { get; set; }

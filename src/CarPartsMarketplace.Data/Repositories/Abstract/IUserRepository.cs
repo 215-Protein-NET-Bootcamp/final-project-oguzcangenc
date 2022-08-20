@@ -1,9 +1,9 @@
 ﻿using CarPartsMarketplace.Core.Data;
-using CarPartsMarketplace.Entities;
+using CarPartsMarketplace.Core.Entities;
 
 namespace CarPartsMarketplace.Data.Repositories.Abstract
 {
-    public interface IUserRepository: IEfGenericRepository<ApplicationUser>
+    public interface IUserRepository: IEfGenericRepository<User>
     {
     }
 }

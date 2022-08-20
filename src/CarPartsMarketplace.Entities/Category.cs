@@ -2,7 +2,7 @@
 
 namespace CarPartsMarketplace.Entities
 {
-    public class Category:BaseEntity,IEntity
+    public class Category:BaseEntity
     {
         public string Name { get; set; }
 

@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
-using CarPartsMarketplace.Core.Entities;
+using CarPartsMarketplace.Business.Validation.FluentValidation.Product;
+using CarPartsMarketplace.Core.Aspects.Autofac.Validation;
 using CarPartsMarketplace.Core.Utilities.FileHelper.Abstract;
-using CarPartsMarketplace.Core.Utilities.FileHelper.Concrete;
 using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Data.Repositories.Abstract;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
-using CarPartsMarketplace.Data.Repositories.UnitOfWork.Concrete;
 using CarPartsMarketplace.Entities;
 using CarPartsMarketplace.Entities.Dtos.Product;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +20,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileHelper _fileHelper;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper, IUnitOfWork unitOfWork, IFileHelper fileHelper, IHttpContextAccessor httpContextAccessor) : base(productRepository, mapper, unitOfWork,httpContextAccessor)
+        public ProductService(IProductRepository productRepository, IMapper mapper, IUnitOfWork unitOfWork, IFileHelper fileHelper, IHttpContextAccessor httpContextAccessor) : base(productRepository, mapper, unitOfWork, httpContextAccessor)
         {
             _productRepository = productRepository;
             _mapper = mapper;
@@ -29,6 +28,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             _fileHelper = fileHelper;
         }
 
+        [ValidationAspect(typeof(ProductCreateValidator))]
         public override async Task<IResult> Create(CreateProductDto createResource)
         {
             try
@@ -38,8 +38,8 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 if (uploadData.Success)
                 {
                     tempEntity.ImageUrl = uploadData.Data;
-                    tempEntity.ApplicationUserId = CurrentUserId;
-              
+                    tempEntity.UserId = CurrentUserId;
+
                 }
                 await _productRepository.AddAsync(tempEntity);
                 await _unitOfWork.CompleteAsync();
@@ -52,7 +52,52 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             }
         }
 
-     
+        public override async Task<IResult> Update(int id, UpdateProductDto updateResource)
+        {
+            try
+            {
+                var trackEntity = await _productRepository.GetByIdAsync(id);
+                if (trackEntity == null)
+                    return new ErrorResult(Messages.RECORD_NOT_FOUND);
+                var res = _mapper.Map(updateResource, trackEntity);
+                _productRepository.Update(trackEntity);
+                await _unitOfWork.CompleteAsync();
+
+                return new SuccessResult(Messages.RECORD_UPDATED);
+            }
+            catch (Exception ex)
+            {
+                throw new MessageResultException(Messages.UPDATE_ERROR, ex);
+            }
+        }
+
+        public async Task<IResult> EditProductImage(int productId, EditProductImageDto editProductImageDto)
+        {
+            var trackEntity = await _productRepository.GetByIdAsync(productId);
+            if (trackEntity == null)
+                return new ErrorResult(Messages.RECORD_NOT_FOUND);
+
+            if (editProductImageDto.EditFormFile == null)
+            {
+                trackEntity.ImageUrl = _fileHelper.SetProductImage(trackEntity.ImageUrl);
+            }
+            else
+            {
+                var uploadData = await _fileHelper.UploadFileUpdate(editProductImageDto.EditFormFile);
+                if (uploadData.Success)
+                {
+                    trackEntity.ImageUrl = uploadData.Data;
+                }
+                else
+                {
+                    return new ErrorResult(Messages.UPDATE_ERROR);
+
+                }
+            }
+
+            await _unitOfWork.CompleteAsync();
+            return new SuccessResult(Messages.RECORD_UPDATED);
+        }
     }
 
 }

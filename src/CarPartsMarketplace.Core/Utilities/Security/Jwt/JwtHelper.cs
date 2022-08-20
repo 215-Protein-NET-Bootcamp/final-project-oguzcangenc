@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using CarPartsMarketplace.Core.Constants;
 using CarPartsMarketplace.Core.Entities;
 using CarPartsMarketplace.Core.Utilities.Security.Encyption;
 using Microsoft.Extensions.Options;

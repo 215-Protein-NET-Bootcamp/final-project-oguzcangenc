@@ -1,13 +1,9 @@
 ﻿using CarPartsMarketplace.Core.Constants;
 using CarPartsMarketplace.Core.Utilities.Results;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CarPartsMarketplace.Core.Utilities.FileHelper.Abstract;
-using System.Runtime.Intrinsics.X86;
+using System.IO;
+using System.Drawing;
 
 namespace CarPartsMarketplace.Core.Utilities.FileHelper.Concrete
 {
@@ -21,14 +17,23 @@ namespace CarPartsMarketplace.Core.Utilities.FileHelper.Concrete
 
         public async Task<IDataResult<string>> UploadFileUpdate(IFormFile file)
         {
-            if (file.Length == 0)
+            try
+            {
+                if (file.Length == 0)
+                {
+                    return new ErrorDataResult<string>(Messages.FILE_NOT_FOUND);
+                }
+
+                var result = await WriteFile(file);
+
+                return new SuccessDataResult<string>(result, Messages.SUCCESS_FILE_UPLOAD);
+            }
+            catch (Exception e)
             {
                 return new ErrorDataResult<string>(Messages.FILE_NOT_FOUND);
+
             }
 
-            var result = await WriteFile(file);
-
-            return new SuccessDataResult<string>(result, Messages.SUCCESS_FILE_UPLOAD);
         }
 
         public async Task<string> WriteFile(IFormFile file)
@@ -42,7 +47,7 @@ namespace CarPartsMarketplace.Core.Utilities.FileHelper.Concrete
                 var imageBasePath = "wwwroot\\images";
                 var getCurrentDirectory = Directory.GetCurrentDirectory();
                 var path = Path.Combine(getCurrentDirectory, imageBasePath, fileName);
-                fileName = _httpContextAccessor.HttpContext.Request.Host.Value + "\\images\\"+ fileName;
+                fileName = _httpContextAccessor.HttpContext.Request.Host.Value + "/images/" + fileName;
                 using (var bits = new FileStream(path, FileMode.Create))
                 {
                     await file.CopyToAsync(bits);
@@ -53,6 +58,23 @@ namespace CarPartsMarketplace.Core.Utilities.FileHelper.Concrete
                 return e.Message;
             }
 
+            return fileName;
+        }
+        public string SetProductImage(string currentImageUrl)
+        {
+            string fileName;
+            var split = currentImageUrl.Split('/');
+            fileName = _httpContextAccessor.HttpContext.Request.Host.Value + "/images/placeholder.png";
+            if (split[2] != "placeholder.png")
+            {
+                FileInfo file = new FileInfo("wwwroot\\images\\" + split[2]);
+                if (file.Exists)
+                {
+                    file.Delete();
+                    return fileName;
+
+                }
+            }
             return fileName;
         }
     }

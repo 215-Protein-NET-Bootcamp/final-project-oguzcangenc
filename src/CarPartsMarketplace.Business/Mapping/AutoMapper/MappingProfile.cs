@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using CarPartsMarketplace.Core.Entities;
 using CarPartsMarketplace.Entities;
 using CarPartsMarketplace.Entities.Dtos.ApplicationUser;
 using CarPartsMarketplace.Entities.Dtos.Brand;
@@ -15,12 +16,13 @@ namespace CarPartsMarketplace.Business.Mapping.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<UserForRegisterDto, ApplicationUser>().ReverseMap();
-            CreateMap<ApplicationUserDto, ApplicationUser>().ReverseMap();
+            CreateMap<UserForRegisterDto, User>().ReverseMap();
+            CreateMap<UserDto, User>().ReverseMap();
 
             CreateMap<ProductDto, Product>().ReverseMap();
             CreateMap<CreateProductDto, Product>().ReverseMap();
             CreateMap<UpdateProductDto, Product>().ReverseMap();
+
 
             CreateMap<BrandDto, Brand>().ReverseMap();
             CreateMap<CreateBrandDto, Brand>().ReverseMap();
