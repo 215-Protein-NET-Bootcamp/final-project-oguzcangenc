@@ -12,6 +12,8 @@ namespace CarPartsMarketplace.Business.Services.Abstract
         Task<IDataResult<IEnumerable<ProductDto>>> GetByCategoryId(int categoryId);
         Task<IDataResult<IEnumerable<ProductDto>>> GetAllProductDetail(Expression<Func<Product, bool>>? filter = null);
         Task<IDataResult<IEnumerable<ProductDto>>> GetProductPaginationAsync(PaginationFilter paginationFilter, ProductDto filterResource, string route);
-        Task<IResult> SellProduct(int productId, int buyUserId);
+        Task<IResult> SellOfferProduct(int productId, int buyUserId);
+        Task<IResult> SellDirectProduct(int productId);
+
     }
 }

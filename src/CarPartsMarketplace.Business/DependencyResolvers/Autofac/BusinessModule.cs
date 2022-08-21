@@ -13,7 +13,7 @@ using CarPartsMarketplace.Business.BackgroundJobs.Concrete;
 using CarPartsMarketplace.Business.BackgroundJobs.Manager;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Concrete;
-using CarPartsMarketplace.Business.Services.Redis;
+using CarPartsMarketplace.Business.Adapters.RedisService;
 
 namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
 {

@@ -43,6 +43,7 @@
         public static string NO_OFFER = "Bu ürüne teklif verilemez";
         public static string PRODUCT_IS_SOLD = "Bu ürün satılmıştır";
         public static string CANNOT_OWN_PRODUCT = "Kendi Ürünlerinize Teklif Veremezsiniz.";
+        public static string CANNOT_SELL_OWN_PRODUCT = "Kendi Ürünlerinizi Satın Alamazsınız.";
         public static string OFFER_HIGHER_PRODUCT = "Teklif ürün fiyatından yüksek olamaz";
         public static string UPDATE_AUTH_ERROR = "Bu ürünü düzenleyemezsiniz. Sadece kendi ürünlerinizi düzenleyebilirsiniz.";
         public static string UNDO_OFFER_ERROR = "Bu teklif size ait değil";

@@ -81,7 +81,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             if (offerReturnDto.OfferReturn == Offer.OfferReturnType.Accept)
             {
 
-                var response = await _productService.SellProduct(offer.ProductId, offer.UserId);
+                var response = await _productService.SellOfferProduct(offer.ProductId, offer.UserId);
                 if (response.Success)
                 {
                     offer.OfferReturn = offerReturnDto.OfferReturn;

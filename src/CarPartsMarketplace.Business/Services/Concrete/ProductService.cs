@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
+using CarPartsMarketplace.Business.Adapters.RedisService;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
-using CarPartsMarketplace.Business.Services.Redis;
 using CarPartsMarketplace.Business.Validation.FluentValidation.Product;
-using CarPartsMarketplace.Core.Aspects.Autofac.Caching;
 using CarPartsMarketplace.Core.Aspects.Autofac.Validation;
 using CarPartsMarketplace.Core.Extensions;
 using CarPartsMarketplace.Core.Utilities.FileHelper.Abstract;
@@ -33,12 +32,12 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileHelper _fileHelper;
 
-        public ProductService(IProductRepository productRepository, 
-            IMapper mapper, 
-            IUnitOfWork unitOfWork, 
-            IFileHelper fileHelper, 
-            IHttpContextAccessor httpContextAccessor, 
-            IDistributedCache distributedCache, 
+        public ProductService(IProductRepository productRepository,
+            IMapper mapper,
+            IUnitOfWork unitOfWork,
+            IFileHelper fileHelper,
+            IHttpContextAccessor httpContextAccessor,
+            IDistributedCache distributedCache,
             IRelatePaginationUri relatePaginationUri,
             IRedisClearCache redisClearCache) : base(productRepository, mapper, unitOfWork, httpContextAccessor)
         {
@@ -98,7 +97,6 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 throw new MessageResultException(Messages.UPDATE_ERROR, ex);
             }
         }
-
         public async Task<IResult> EditProductImage(int productId, EditProductImageDto editProductImageDto)
         {
             var trackEntity = await _productRepository.GetByIdAsync(productId);
@@ -126,7 +124,6 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             await _unitOfWork.CompleteAsync();
             return new SuccessResult(Messages.RECORD_UPDATED);
         }
-
         public async Task<IDataResult<IEnumerable<ProductDto>>> GetByCategoryId(int categoryId)
         {
             var categoryProduct = await _productRepository.GetAllByCategoryIdAsync(categoryId);
@@ -135,9 +132,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
 
             return new SuccessDataResult<IEnumerable<ProductDto>>(_mapper.Map<IEnumerable<ProductDto>>(categoryProduct), Messages.RECORD_LISTED);
         }
-
-
-        public async Task<IResult> SellProduct(int productId, int buyUserId)
+        public async Task<IResult> SellOfferProduct(int productId, int buyUserId)
         {
             var product = await _productRepository.GetAsync(x => x.Id == productId);
             if (product.IsSold)
@@ -151,7 +146,6 @@ namespace CarPartsMarketplace.Business.Services.Concrete
 
             return new SuccessResult(Messages.RECORD_UPDATED);
         }
-
         public async Task<IDataResult<IEnumerable<ProductDto>>> GetAllProductDetail(Expression<Func<Product, bool>>? filter = null)
         {
             var detailProducts = await _productRepository.GetAllDetailProductAsync(filter);
@@ -160,7 +154,6 @@ namespace CarPartsMarketplace.Business.Services.Concrete
 
             return new SuccessDataResult<IEnumerable<ProductDto>>(_mapper.Map<IEnumerable<ProductDto>>(detailProducts), Messages.RECORD_LISTED);
         }
-
         public async Task<IDataResult<IEnumerable<ProductDto>>> GetProductPaginationAsync(PaginationFilter paginationFilter, ProductDto filterResource, string route)
         {
             var cacheKey = $"product-{paginationFilter.PageNumber}-{paginationFilter.PageSize}";
@@ -199,6 +192,27 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             var resource = new PaginatedResult<IEnumerable<ProductDto>>(tempResource);
             resource.CreatePaginationResponse(paginationFilter, paginationPerson.total, _relatePaginationUri, route);
             return resource;
+        }
+
+        public async Task<IResult> SellDirectProduct(int productId)
+        {
+            var product = await _productRepository.GetAsync(x => x.Id == productId);
+
+            if (product.UserId == CurrentUserId)
+                return new ErrorResult(Messages.CANNOT_SELL_OWN_PRODUCT);
+            
+            if (product.IsSold)
+                return new ErrorResult(Messages.PRODUCT_IS_SOLD);
+            
+            if (product == null)
+                return new ErrorResult(Messages.UPDATE_ERROR);
+            
+            product.IsSold = true;
+            product.IsOfferable = false;
+            product.PurchasingUserId = CurrentUserId;
+            await _unitOfWork.CompleteAsync();
+
+            return new SuccessResult(Messages.RECORD_UPDATED);
         }
     }
 

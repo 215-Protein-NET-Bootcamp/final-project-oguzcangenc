@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarPartsMarketplace.Business.Services.Redis
+namespace CarPartsMarketplace.Business.Adapters.RedisService
 {
     public class RedisClearCache: IRedisClearCache
     {

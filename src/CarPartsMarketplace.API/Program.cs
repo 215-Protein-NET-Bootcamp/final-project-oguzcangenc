@@ -3,22 +3,17 @@ using Autofac.Extensions.DependencyInjection;
 using CarPartsMarketplace.API.Extensions.StartupExtension;
 using CarPartsMarketplace.API.Middleware;
 using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
+using CarPartsMarketplace.Business.Adapters.RedisService;
 using CarPartsMarketplace.Business.DependencyResolvers.Autofac;
-using CarPartsMarketplace.Business.Services.Redis;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
 using CarPartsMarketplace.Core.DependencyResolvers;
 using CarPartsMarketplace.Core.Extensions;
 using CarPartsMarketplace.Data.Context.EntityFramework;
 using Hangfire;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers().AddJsonOptions(x =>
-{
-    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+builder.Services.AddCustomizeControllers();
 
 builder.Host.UseSerilogExtension();
 

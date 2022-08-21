@@ -20,7 +20,7 @@ namespace CarPartsMarketplace.API.Controllers
         {
             var route = Request.Path.Value;
             PaginationFilter pagintation = new PaginationFilter(pageNumber, pageSize);
-            var response = await _productService.GetProductPaginationAsync(pagintation,null, route);
+            var response = await _productService.GetProductPaginationAsync(pagintation, null, route);
             if (response.Success)
             {
                 return Ok(response);
@@ -48,7 +48,6 @@ namespace CarPartsMarketplace.API.Controllers
             }
             return BadRequest(response);
         }
-
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] CreateProductDto createProductDto)
@@ -62,11 +61,11 @@ namespace CarPartsMarketplace.API.Controllers
             return BadRequest(response);
         }
 
-
-        [HttpPost("edit-product-image")]
-        public async Task<IActionResult> EditProductImage(int productId, [FromForm] EditProductImageDto formFile)
+        [Authorize]
+        [HttpPost("buy-direct-product")]
+        public async Task<IActionResult> BuyProduct([FromForm] int productId)
         {
-            var response = await _productService.EditProductImage(productId,formFile);
+            var response = await _productService.SellDirectProduct(productId);
             if (response.Success)
             {
                 return Ok(response);
@@ -74,7 +73,17 @@ namespace CarPartsMarketplace.API.Controllers
 
             return BadRequest(response);
         }
+        [HttpPost("edit-product-image")]
+        public async Task<IActionResult> EditProductImage(int productId, [FromForm] EditProductImageDto formFile)
+        {
+            var response = await _productService.EditProductImage(productId, formFile);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
 
+            return BadRequest(response);
+        }
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] UpdateProductDto updateProductDto)
