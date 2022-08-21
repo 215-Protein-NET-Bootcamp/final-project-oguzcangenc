@@ -27,7 +27,6 @@ namespace CarPartsMarketplace.API.Controllers
             }
             return BadRequest(response);
         }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -60,7 +59,6 @@ namespace CarPartsMarketplace.API.Controllers
 
             return BadRequest(response);
         }
-
         [Authorize]
         [HttpPost("buy-direct-product")]
         public async Task<IActionResult> BuyProduct([FromForm] int productId)
@@ -73,6 +71,7 @@ namespace CarPartsMarketplace.API.Controllers
 
             return BadRequest(response);
         }
+        [Authorize]
         [HttpPost("edit-product-image")]
         public async Task<IActionResult> EditProductImage(int productId, [FromForm] EditProductImageDto formFile)
         {

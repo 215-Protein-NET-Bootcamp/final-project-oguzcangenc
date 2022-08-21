@@ -51,5 +51,6 @@
         public static string OFFER_USER_ERROR = "Teklif size ait veya sistem hatası";
         public static string OFFER_ACCEPT_SUCCESSFULY = "Teklif Kabul Edildi. Ürün Satıldı";
         public static string OFFER_REJECT = "Teklif Reddedildi";
+        public static string PRODUCT_BUY_SUCCESSFULY => "Ürünü başarıyla satın aldınız.";
     }
 }

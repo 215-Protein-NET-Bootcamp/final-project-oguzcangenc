@@ -14,7 +14,7 @@ namespace CarPartsMarketplace.Business.Validation.FluentValidation.Offer
         public CreateOfferDtoValidator()
         {
             RuleFor(request => request.ProductId).NotEmpty();
-            RuleFor(request => request.IsPercentPrice).NotEmpty();
+            RuleFor(request => request.IsPercentPrice).NotNull();
             RuleFor(request => request.Price).NotEmpty();
         }
     }

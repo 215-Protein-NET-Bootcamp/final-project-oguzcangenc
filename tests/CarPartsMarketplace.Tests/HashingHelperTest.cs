@@ -1,6 +1,6 @@
 using CarPartsMarketplace.Core.Utilities.Security.Hashing;
 
-namespace CarPartsMarketplace.Tests.Core.Helpers
+namespace CarPartsMarketplace.Tests
 {
     public class HashingHelperTest
     {

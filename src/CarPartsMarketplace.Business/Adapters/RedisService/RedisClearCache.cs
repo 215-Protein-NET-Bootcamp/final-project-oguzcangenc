@@ -19,6 +19,10 @@ namespace CarPartsMarketplace.Business.Adapters.RedisService
         {
             try
             {
+                var con = new ConfigurationOptions();
+                con.ClientName = "";
+                con.Password = "";
+    
                 ConnectionMultiplexer m = ConnectionMultiplexer.Connect(_redisConfiguration.Value.Host+":"+_redisConfiguration.Value.Port+","+"allowAdmin=true");
                 var endpoints = m.GetEndPoints();
                 var server = m.GetServer(endpoints.First());

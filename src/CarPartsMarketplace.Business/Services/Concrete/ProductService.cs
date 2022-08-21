@@ -122,6 +122,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             }
 
             await _unitOfWork.CompleteAsync();
+            _redisClearCache.RedisCacheClear();
             return new SuccessResult(Messages.RECORD_UPDATED);
         }
         public async Task<IDataResult<IEnumerable<ProductDto>>> GetByCategoryId(int categoryId)
@@ -156,35 +157,44 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         }
         public async Task<IDataResult<IEnumerable<ProductDto>>> GetProductPaginationAsync(PaginationFilter paginationFilter, ProductDto filterResource, string route)
         {
-            var cacheKey = $"product-{paginationFilter.PageNumber}-{paginationFilter.PageSize}";
-            string json;
-            var productFromCache = await _distributedCache.GetAsync(cacheKey);
-            if (productFromCache != null)
+            try
             {
-                json = Encoding.UTF8.GetString(productFromCache);
-                var products = JsonConvert.DeserializeObject<PaginationEntityResponse<ProductDto>>(json);
-                return new PaginatedResult<IEnumerable<ProductDto>>(products.Data, products.PageNumber, products.PageSize)
+                var cacheKey = $"product-{paginationFilter.PageNumber}-{paginationFilter.PageSize}";
+                string json;
+                var productFromCache = await _distributedCache.GetAsync(cacheKey);
+                if (productFromCache != null)
                 {
-                    PreviousPage = products.PreviousPage,
-                    NextPage = products.NextPage,
-                    LastPage = products.LastPage,
-                    FirstPage = products.FirstPage,
-                    TotalPages = products.TotalPages,
-                    TotalRecords = products.TotalRecords
-                };
+                    json = Encoding.UTF8.GetString(productFromCache);
+                    var products = JsonConvert.DeserializeObject<PaginationEntityResponse<ProductDto>>(json);
+                    return new PaginatedResult<IEnumerable<ProductDto>>(products.Data, products.PageNumber, products.PageSize)
+                    {
+                        PreviousPage = products.PreviousPage,
+                        NextPage = products.NextPage,
+                        LastPage = products.LastPage,
+                        FirstPage = products.FirstPage,
+                        TotalPages = products.TotalPages,
+                        TotalRecords = products.TotalRecords
+                    };
+                }
+                else
+                {
+                    var paginationPerson = await _productRepository.GetProductPaginationAsync(paginationFilter, filterResource);
+                    var resource = GeneratePagination(paginationFilter, route, paginationPerson);
+                    json = JsonConvert.SerializeObject(resource);
+                    productFromCache = Encoding.UTF8.GetBytes(json);
+                    var options = new DistributedCacheEntryOptions()
+                            .SetSlidingExpiration(TimeSpan.FromDays(1))
+                            .SetAbsoluteExpiration(DateTime.Now.AddMonths(1));
+                    await _distributedCache.SetAsync(cacheKey, productFromCache, options);
+                    return resource;
+                }
             }
-            else
+            catch (Exception e)
             {
-                var paginationPerson = await _productRepository.GetProductPaginationAsync(paginationFilter, filterResource);
-                var resource = GeneratePagination(paginationFilter, route, paginationPerson);
-                json = JsonConvert.SerializeObject(resource);
-                productFromCache = Encoding.UTF8.GetBytes(json);
-                var options = new DistributedCacheEntryOptions()
-                        .SetSlidingExpiration(TimeSpan.FromDays(1))
-                        .SetAbsoluteExpiration(DateTime.Now.AddMonths(1));
-                await _distributedCache.SetAsync(cacheKey, productFromCache, options);
-                return resource;
+
+                throw;
             }
+          
         }
         private PaginatedResult<IEnumerable<ProductDto>> GeneratePagination(PaginationFilter paginationFilter, string route, (IEnumerable<Product> records, int total) paginationPerson)
         {
@@ -197,6 +207,8 @@ namespace CarPartsMarketplace.Business.Services.Concrete
         public async Task<IResult> SellDirectProduct(int productId)
         {
             var product = await _productRepository.GetAsync(x => x.Id == productId);
+            if (product == null)
+                return new ErrorResult(Messages.ID_NOT_EXISTENT);
 
             if (product.UserId == CurrentUserId)
                 return new ErrorResult(Messages.CANNOT_SELL_OWN_PRODUCT);
@@ -204,15 +216,14 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             if (product.IsSold)
                 return new ErrorResult(Messages.PRODUCT_IS_SOLD);
             
-            if (product == null)
-                return new ErrorResult(Messages.UPDATE_ERROR);
+           
             
             product.IsSold = true;
             product.IsOfferable = false;
             product.PurchasingUserId = CurrentUserId;
             await _unitOfWork.CompleteAsync();
 
-            return new SuccessResult(Messages.RECORD_UPDATED);
+            return new SuccessResult(Messages.PRODUCT_BUY_SUCCESSFULY);
         }
     }
 
