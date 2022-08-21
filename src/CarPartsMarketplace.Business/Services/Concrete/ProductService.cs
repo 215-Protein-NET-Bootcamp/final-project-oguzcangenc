@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
+using CarPartsMarketplace.Business.Services.Redis;
 using CarPartsMarketplace.Business.Validation.FluentValidation.Product;
 using CarPartsMarketplace.Core.Aspects.Autofac.Caching;
 using CarPartsMarketplace.Core.Aspects.Autofac.Validation;
@@ -15,6 +16,7 @@ using CarPartsMarketplace.Entities.Dtos.Product;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using StackExchange.Redis;
 using System;
 using System.Linq.Expressions;
 using System.Text;
@@ -25,13 +27,20 @@ namespace CarPartsMarketplace.Business.Services.Concrete
     {
         private readonly IMapper _mapper;
         private readonly IRelatePaginationUri _relatePaginationUri;
-
+        private readonly IRedisClearCache _redisClearCache;
         private readonly IProductRepository _productRepository;
         private readonly IDistributedCache _distributedCache;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileHelper _fileHelper;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper, IUnitOfWork unitOfWork, IFileHelper fileHelper, IHttpContextAccessor httpContextAccessor, IDistributedCache distributedCache, IRelatePaginationUri relatePaginationUri) : base(productRepository, mapper, unitOfWork, httpContextAccessor)
+        public ProductService(IProductRepository productRepository, 
+            IMapper mapper, 
+            IUnitOfWork unitOfWork, 
+            IFileHelper fileHelper, 
+            IHttpContextAccessor httpContextAccessor, 
+            IDistributedCache distributedCache, 
+            IRelatePaginationUri relatePaginationUri,
+            IRedisClearCache redisClearCache) : base(productRepository, mapper, unitOfWork, httpContextAccessor)
         {
             _productRepository = productRepository;
             _distributedCache = distributedCache;
@@ -39,6 +48,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             _unitOfWork = unitOfWork;
             _fileHelper = fileHelper;
             _relatePaginationUri = relatePaginationUri;
+            _redisClearCache = redisClearCache;
         }
 
         [ValidationAspect(typeof(ProductCreateValidator))]
@@ -56,6 +66,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 }
                 await _productRepository.AddAsync(tempEntity);
                 await _unitOfWork.CompleteAsync();
+                _redisClearCache.RedisCacheClear();
 
                 return new SuccessDataResult<ProductDto>(_mapper.Map<Product, ProductDto>(tempEntity), Messages.RECORD_ADDED);
             }
@@ -75,10 +86,10 @@ namespace CarPartsMarketplace.Business.Services.Concrete
 
                 if (trackEntity.UserId != CurrentUserId)
                     return new ErrorResult(Messages.UPDATE_AUTH_ERROR);
-
                 var res = _mapper.Map(updateResource, trackEntity);
                 _productRepository.Update(trackEntity);
                 await _unitOfWork.CompleteAsync();
+                _redisClearCache.RedisCacheClear();
 
                 return new SuccessResult(Messages.RECORD_UPDATED);
             }
@@ -149,15 +160,15 @@ namespace CarPartsMarketplace.Business.Services.Concrete
 
             return new SuccessDataResult<IEnumerable<ProductDto>>(_mapper.Map<IEnumerable<ProductDto>>(detailProducts), Messages.RECORD_LISTED);
         }
-        
+
         public async Task<IDataResult<IEnumerable<ProductDto>>> GetProductPaginationAsync(PaginationFilter paginationFilter, ProductDto filterResource, string route)
         {
-            var cacheKey = $"{route}-{paginationFilter.PageNumber}-{paginationFilter.PageSize}";
+            var cacheKey = $"product-{paginationFilter.PageNumber}-{paginationFilter.PageSize}";
             string json;
-            var employeesFromCache = await _distributedCache.GetAsync(cacheKey);
-            if (employeesFromCache != null)
+            var productFromCache = await _distributedCache.GetAsync(cacheKey);
+            if (productFromCache != null)
             {
-                json = Encoding.UTF8.GetString(employeesFromCache);
+                json = Encoding.UTF8.GetString(productFromCache);
                 var products = JsonConvert.DeserializeObject<PaginationEntityResponse<ProductDto>>(json);
                 return new PaginatedResult<IEnumerable<ProductDto>>(products.Data, products.PageNumber, products.PageSize)
                 {
@@ -174,11 +185,11 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 var paginationPerson = await _productRepository.GetProductPaginationAsync(paginationFilter, filterResource);
                 var resource = GeneratePagination(paginationFilter, route, paginationPerson);
                 json = JsonConvert.SerializeObject(resource);
-                employeesFromCache = Encoding.UTF8.GetBytes(json);
+                productFromCache = Encoding.UTF8.GetBytes(json);
                 var options = new DistributedCacheEntryOptions()
                         .SetSlidingExpiration(TimeSpan.FromDays(1))
                         .SetAbsoluteExpiration(DateTime.Now.AddMonths(1));
-                await _distributedCache.SetAsync(cacheKey, employeesFromCache, options);
+                await _distributedCache.SetAsync(cacheKey, productFromCache, options);
                 return resource;
             }
         }

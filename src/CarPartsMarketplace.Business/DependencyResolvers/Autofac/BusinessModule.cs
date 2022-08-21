@@ -13,6 +13,7 @@ using CarPartsMarketplace.Business.BackgroundJobs.Concrete;
 using CarPartsMarketplace.Business.BackgroundJobs.Manager;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Concrete;
+using CarPartsMarketplace.Business.Services.Redis;
 
 namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
 {
@@ -40,6 +41,7 @@ namespace CarPartsMarketplace.Business.DependencyResolvers.Autofac
             builder.RegisterType<UsageRepository>().As<IUsageRepository>().InstancePerLifetimeScope();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            builder.RegisterType<RedisClearCache>().As<IRedisClearCache>().SingleInstance();
             builder.RegisterType<MailService>().As<IMailService>().InstancePerDependency();
             builder.RegisterType<SendMailJob>().As<ISendMailJob>().InstancePerLifetimeScope();
             builder.RegisterType<JobManager>().As<IJobManager>().InstancePerLifetimeScope();

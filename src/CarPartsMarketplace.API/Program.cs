@@ -4,6 +4,7 @@ using CarPartsMarketplace.API.Extensions.StartupExtension;
 using CarPartsMarketplace.API.Middleware;
 using CarPartsMarketplace.Business.Adapters.EmailService.Utilities;
 using CarPartsMarketplace.Business.DependencyResolvers.Autofac;
+using CarPartsMarketplace.Business.Services.Redis;
 using CarPartsMarketplace.Core.CrossCuttingConcerns.Logging.Serilog;
 using CarPartsMarketplace.Core.DependencyResolvers;
 using CarPartsMarketplace.Core.Extensions;
@@ -40,6 +41,8 @@ builder.Services.AddJwtConfigurationService(builder);
 builder.Services.AddDependencyResolvers(builder.Configuration, new ICoreModule[] { new CoreModule() });
 
 builder.Services.Configure<FileLogConfiguration>(builder.Configuration.GetSection("FileLogConfiguration"));
+
+builder.Services.Configure<RedisConfiguration>(builder.Configuration.GetSection("Redis"));
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
