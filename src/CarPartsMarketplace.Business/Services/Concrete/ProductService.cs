@@ -2,31 +2,43 @@
 using CarPartsMarketplace.Business.Constant;
 using CarPartsMarketplace.Business.Services.Abstract;
 using CarPartsMarketplace.Business.Validation.FluentValidation.Product;
+using CarPartsMarketplace.Core.Aspects.Autofac.Caching;
 using CarPartsMarketplace.Core.Aspects.Autofac.Validation;
+using CarPartsMarketplace.Core.Extensions;
 using CarPartsMarketplace.Core.Utilities.FileHelper.Abstract;
+using CarPartsMarketplace.Core.Utilities.Pagination;
 using CarPartsMarketplace.Core.Utilities.Results;
 using CarPartsMarketplace.Data.Repositories.Abstract;
 using CarPartsMarketplace.Data.Repositories.UnitOfWork.Abstract;
 using CarPartsMarketplace.Entities;
 using CarPartsMarketplace.Entities.Dtos.Product;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 using System;
+using System.Linq.Expressions;
+using System.Text;
 
 namespace CarPartsMarketplace.Business.Services.Concrete
 {
     public class ProductService : GenericService<ProductDto, CreateProductDto, UpdateProductDto, Product>, IProductService
     {
         private readonly IMapper _mapper;
+        private readonly IRelatePaginationUri _relatePaginationUri;
+
         private readonly IProductRepository _productRepository;
+        private readonly IDistributedCache _distributedCache;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileHelper _fileHelper;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper, IUnitOfWork unitOfWork, IFileHelper fileHelper, IHttpContextAccessor httpContextAccessor) : base(productRepository, mapper, unitOfWork, httpContextAccessor)
+        public ProductService(IProductRepository productRepository, IMapper mapper, IUnitOfWork unitOfWork, IFileHelper fileHelper, IHttpContextAccessor httpContextAccessor, IDistributedCache distributedCache, IRelatePaginationUri relatePaginationUri) : base(productRepository, mapper, unitOfWork, httpContextAccessor)
         {
             _productRepository = productRepository;
+            _distributedCache = distributedCache;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _fileHelper = fileHelper;
+            _relatePaginationUri = relatePaginationUri;
         }
 
         [ValidationAspect(typeof(ProductCreateValidator))]
@@ -127,6 +139,55 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             await _unitOfWork.CompleteAsync();
 
             return new SuccessResult(Messages.RECORD_UPDATED);
+        }
+
+        public async Task<IDataResult<IEnumerable<ProductDto>>> GetAllProductDetail(Expression<Func<Product, bool>>? filter = null)
+        {
+            var detailProducts = await _productRepository.GetAllDetailProductAsync(filter);
+            if (detailProducts == null)
+                return new ErrorDataResult<IEnumerable<ProductDto>>(Messages.RECORD_NOT_FOUND);
+
+            return new SuccessDataResult<IEnumerable<ProductDto>>(_mapper.Map<IEnumerable<ProductDto>>(detailProducts), Messages.RECORD_LISTED);
+        }
+        
+        public async Task<IDataResult<IEnumerable<ProductDto>>> GetProductPaginationAsync(PaginationFilter paginationFilter, ProductDto filterResource, string route)
+        {
+            var cacheKey = $"{route}-{paginationFilter.PageNumber}-{paginationFilter.PageSize}";
+            string json;
+            var employeesFromCache = await _distributedCache.GetAsync(cacheKey);
+            if (employeesFromCache != null)
+            {
+                json = Encoding.UTF8.GetString(employeesFromCache);
+                var products = JsonConvert.DeserializeObject<PaginationEntityResponse<ProductDto>>(json);
+                return new PaginatedResult<IEnumerable<ProductDto>>(products.Data, products.PageNumber, products.PageSize)
+                {
+                    PreviousPage = products.PreviousPage,
+                    NextPage = products.NextPage,
+                    LastPage = products.LastPage,
+                    FirstPage = products.FirstPage,
+                    TotalPages = products.TotalPages,
+                    TotalRecords = products.TotalRecords
+                };
+            }
+            else
+            {
+                var paginationPerson = await _productRepository.GetProductPaginationAsync(paginationFilter, filterResource);
+                var resource = GeneratePagination(paginationFilter, route, paginationPerson);
+                json = JsonConvert.SerializeObject(resource);
+                employeesFromCache = Encoding.UTF8.GetBytes(json);
+                var options = new DistributedCacheEntryOptions()
+                        .SetSlidingExpiration(TimeSpan.FromDays(1))
+                        .SetAbsoluteExpiration(DateTime.Now.AddMonths(1));
+                await _distributedCache.SetAsync(cacheKey, employeesFromCache, options);
+                return resource;
+            }
+        }
+        private PaginatedResult<IEnumerable<ProductDto>> GeneratePagination(PaginationFilter paginationFilter, string route, (IEnumerable<Product> records, int total) paginationPerson)
+        {
+            var tempResource = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(paginationPerson.records);
+            var resource = new PaginatedResult<IEnumerable<ProductDto>>(tempResource);
+            resource.CreatePaginationResponse(paginationFilter, paginationPerson.total, _relatePaginationUri, route);
+            return resource;
         }
     }
 

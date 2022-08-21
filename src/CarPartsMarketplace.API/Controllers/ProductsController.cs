@@ -1,4 +1,5 @@
 ﻿using CarPartsMarketplace.Business.Services.Abstract;
+using CarPartsMarketplace.Core.Utilities.Pagination;
 using CarPartsMarketplace.Entities.Dtos.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +16,11 @@ namespace CarPartsMarketplace.API.Controllers
             _productService = productService;
         }
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var response = await _productService.GetAll();
+            var route = Request.Path.Value;
+            PaginationFilter pagintation = new PaginationFilter(pageNumber, pageSize);
+            var response = await _productService.GetProductPaginationAsync(pagintation,null, route);
             if (response.Success)
             {
                 return Ok(response);
@@ -38,7 +41,7 @@ namespace CarPartsMarketplace.API.Controllers
         [HttpGet("category-by-id")]
         public async Task<IActionResult> GetByCategoryId(int id)
         {
-            var response = await _productService.GetByCategoryId(id);
+            var response = await _productService.GetAllProductDetail(p => p.CategoryId == id);
             if (response.Success)
             {
                 return Ok(response);

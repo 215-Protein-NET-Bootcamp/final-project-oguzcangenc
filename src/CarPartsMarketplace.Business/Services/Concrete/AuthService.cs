@@ -51,30 +51,6 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             return new SuccessDataResult<AccessToken>(accessToken, Messages.TOKEN_GENERATE);
         }
 
-        public async Task<IResult> ChangePassword(UserForChangePasswordDto changePasswordDto)
-        {
-            var user = (await _applicationUserService.GetById(CurrentUserId)).Data;
-            if (!HashingHelper.VerifyPasswordHash(changePasswordDto.OldPassword, user.PasswordHash, user.PasswordSalt))
-            {
-                return new ErrorResult(Messages.OLD_PASSWORD_INCORRECT);
-
-            }
-
-            HashingHelper.CreatePasswordHash(changePasswordDto.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-            var result = _applicationUserService.Update(user);
-            await _unitOfWork.CompleteAsync();
-            var response = _mapper.Map<UserDto>(user);
-            if (result.Success)
-            {
-                return new SuccessDataResult<UserDto>(response, Messages.CHANGE_PASSWORD_SUCCESS);
-
-            }
-            return new ErrorResult(Messages.CHANGE_PASSWORD_ERROR);
-
-        }
-
         public async Task<IResult> UserExists(string mail)
         {
             var result = await _applicationUserService.GetByMail(mail);
@@ -114,27 +90,22 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 return new ErrorDataResult<AccessToken>(Messages.EMAIL_NOT_CONFIRMED);
             }
 
-
+            if (userToCheck.Data.LockoutEnabled)
+            {
+                return new ErrorDataResult<AccessToken>(Messages.USER_LOCKED);
+            }
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
             {
-
-                if (userToCheck.Data.LockoutEnabled)
-                {
-                    return new ErrorDataResult<AccessToken>(Messages.USER_LOCKED);
-                }
-
+                userToCheck.Data.AccessFailedCount++;
                 if (userToCheck.Data.AccessFailedCount == 3)
                 {
-                    userToCheck.Data.AccessFailedCount = 0;
                     userToCheck.Data.LockoutEnabled = true;
+                    userToCheck.Data.AccessFailedCount = 0;
                     await _unitOfWork.CompleteAsync();
                     await _jobManager.AccountLocoutInformaitonMailJob(userToCheck.Data.Email);
                     return new ErrorDataResult<AccessToken>(Messages.USER_LOCKED);
                 }
-
-                userToCheck.Data.AccessFailedCount++;
-                _applicationUserService.Update(userToCheck.Data);
                 await _unitOfWork.CompleteAsync();
                 return new ErrorDataResult<AccessToken>(Messages.PASSWORD_INCORRECT);
             }
@@ -142,9 +113,6 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             var resultToken = CreateAccessToken(userToCheck.Data);
             if (resultToken.Success)
             {
-                userToCheck.Data.AccessFailedCount=0;
-                _applicationUserService.Update(userToCheck.Data);
-                await _unitOfWork.CompleteAsync();
                 return new SuccessDataResult<AccessToken>(resultToken.Data, Messages.LOGIN_SUCCESS);
             }
 

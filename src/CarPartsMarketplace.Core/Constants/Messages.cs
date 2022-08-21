@@ -11,5 +11,7 @@
         public static string SUCCESS_FILE_UPLOAD = "Dosya Başarıyla Yüklendi";
         public static string DELETE_FILE = "Dosya Başarıyla Silindi";
         public static string FILE_NOT_EXISTS = "Dosya Mevcut Değil";
+
+        public static string ListPaged = "List was paginated successfully.";
     }
 }

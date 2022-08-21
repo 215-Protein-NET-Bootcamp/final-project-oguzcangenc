@@ -10,7 +10,6 @@ namespace CarPartsMarketplace.Business.Services.Abstract
         Task<IDataResult<UserDto>> Register(UserForRegisterDto userForRegisterDto);
         Task<IResult> EmailConfirmation(UserEmailConfirmationDto userEmailConfirmationDto);
         Task<IDataResult<AccessToken>> Login(UserLoginDto userForLoginDto);
-        Task<IResult> ChangePassword(UserForChangePasswordDto changePasswordDto);
         Task<IResult> AccountActivation(AccountActivationDto email);
     }
 }

@@ -33,14 +33,14 @@
         public static string PASSWORD_NOT_MATCH_REGEX = "Parolada en az 8 karakter en fazla 20 karakter, bir küçük harf ve bir büyük harf ve özel karakter olmalıdır.";
         public static string EMAIL_CONFIRMED = "E-Posta Adresi Başarıyla Doğrulandı. Sisteme Giriş Yapabilirsiniz.";
         public static string EMAIL_ALREADY_CONFIRMED = "E-Posta Zaten Doğrulanmış.";
-        public static string USER_LOCKED = "Hesabınız 10 Süre İle Dakika Kilitlendi";
+        public static string USER_LOCKED = "Hesabınız Kilitlendi Lütfen Yetkiliyle İletişime Geçiniz";
         public static string ACCOUNT_ALREADY_ACTIVE = "Bu Hesap Zaten Aktif";
         public static string ACCOUNT_ACTIVATED = "Hesap Aktif Edildi";
         public static string AUTHORIZATION_DENIED = "Yetkisiz Erişim";
         public static string FILE_TYPE_IS_LARGER_THAN_ALLOWED = "Dosya Boyutu Sınırı Aşıyor.";
         public static string FILE_TYPE_IS_NOT_ALLOWED = "Desteklemeyen Görsel Türü";
         public static string RECORD_NOT_FOUND = "Kayıt Bulunmadı";
-        public static string NO_OFFER = "Bu ürüne teklif verilemez. Bu ürüne zaten teklif verilmiş";
+        public static string NO_OFFER = "Bu ürüne teklif verilemez";
         public static string PRODUCT_IS_SOLD = "Bu ürün satılmıştır";
         public static string CANNOT_OWN_PRODUCT = "Kendi Ürünlerinize Teklif Veremezsiniz.";
         public static string OFFER_HIGHER_PRODUCT = "Teklif ürün fiyatından yüksek olamaz";

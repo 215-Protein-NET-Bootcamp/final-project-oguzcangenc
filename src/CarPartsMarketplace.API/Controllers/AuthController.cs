@@ -15,6 +15,7 @@ namespace CarPartsMarketplace.API.Controllers
     public class AuthController : BaseApiController
     {
         private readonly IAuthService _authService;
+        
 
         public AuthController(IAuthService authService)
         {
@@ -78,24 +79,6 @@ namespace CarPartsMarketplace.API.Controllers
                 return Ok(registerResult);
             }
             return BadRequest(registerResult);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userForChangePassword"></param>
-        /// <returns></returns>
-        [Authorize]
-        [HttpPost("change-password")]
-        public async Task<IActionResult> ChangePassword(UserForChangePasswordDto userForChangePassword)
-        {
-            int userId = int.Parse(User.Claims.First(x => x.Type == "AccountId").Value);
-            var response = await _authService.ChangePassword(userForChangePassword);
-            if (!response.Success)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
         }
         /// <summary>
         /// Account Activation Endpoint

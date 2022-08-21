@@ -29,6 +29,8 @@ builder.Services.AddCustomizeHangfire(builder, connectionString: "DefaultConnect
 
 builder.Services.AddDbContextDependencyInjection<AppDbContext>(builder, connectionString: "DefaultConnection");
 
+builder.Services.AddRedisDependencyInjection(builder.Configuration);
+
 builder.Services.AddHangfireServer();
 
 builder.Services.AddCustomSwaggerExtension();
@@ -48,21 +50,13 @@ builder.Services.AddAutoMapperDependecyInjection(builder);
 ServiceTool.ServiceProvider = builder.Services.BuildServiceProvider();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
 
-}
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dataContext.Database.Migrate();
-
-}
 app.UseSwagger();
 
 app.UseCustomizeSwaggerUI();
 
 app.UseCors("corsapp");
+
 app.UseStaticFiles();
 
 app.UseHttpsRedirection();
