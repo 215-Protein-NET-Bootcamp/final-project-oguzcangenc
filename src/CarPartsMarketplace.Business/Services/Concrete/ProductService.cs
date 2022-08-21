@@ -56,7 +56,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             try
             {
                 var tempEntity = _mapper.Map<CreateProductDto, Product>(createResource);
-                var uploadData = await _fileHelper.UploadFileUpdate(createResource.Image);
+                var uploadData = await _fileHelper.UploadImageUpdate(createResource.Image);
                 if (uploadData.Success)
                 {
                     tempEntity.ImageUrl = uploadData.Data;
@@ -109,7 +109,7 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             }
             else
             {
-                var uploadData = await _fileHelper.UploadFileUpdate(editProductImageDto.EditFormFile);
+                var uploadData = await _fileHelper.UploadImageUpdate(editProductImageDto.EditFormFile);
                 if (uploadData.Success)
                 {
                     trackEntity.ImageUrl = uploadData.Data;

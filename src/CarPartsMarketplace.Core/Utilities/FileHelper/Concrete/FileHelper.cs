@@ -2,6 +2,7 @@
 using CarPartsMarketplace.Core.Utilities.Results;
 using Microsoft.AspNetCore.Http;
 using CarPartsMarketplace.Core.Utilities.FileHelper.Abstract;
+using Serilog.Sinks.File;
 
 namespace CarPartsMarketplace.Core.Utilities.FileHelper.Concrete
 {
@@ -12,14 +13,32 @@ namespace CarPartsMarketplace.Core.Utilities.FileHelper.Concrete
         {
             _httpContextAccessor = httpContextAccessor;
         }
+        public FileHelper()
+        {
 
-        public async Task<IDataResult<string>> UploadFileUpdate(IFormFile file)
+        }
+
+        public async Task<IDataResult<string>> UploadImageUpdate(IFormFile file)
         {
             try
             {
                 if (file.Length == 0)
                 {
                     return new ErrorDataResult<string>(Messages.FILE_NOT_FOUND);
+                }
+
+                if ((file.Length / 1024f) > 400)
+                {
+                    return new ErrorDataResult<string>(Messages.FILE_SIZE_ERROR);
+
+                }
+
+
+                var extension = "." + file.FileName.Split('.')[file.FileName.Split('.').Length - 1];
+                if (extension != ".jpeg" && extension != ".jpg" && extension != ".png")
+                {
+                    return new ErrorDataResult<string>(Messages.IMAGE_FORMAT_ERROR);
+
                 }
 
                 var result = await WriteFile(file);

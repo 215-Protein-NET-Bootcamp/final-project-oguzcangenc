@@ -8,10 +8,14 @@
         public static string? WrongValidationType = "Bu bir doğrualama sınıfı değildir.";
         public static string? FileLogConfigurationNotFound = "Loglama Dizini Bulunamadı";
         public static string FILE_NOT_FOUND = "Dosya Bulunamadı.";
+        public static string FILE_SIZE_ERROR = "Dosya Boyutu Sınırı Aşıyor";
+
         public static string SUCCESS_FILE_UPLOAD = "Dosya Başarıyla Yüklendi";
         public static string DELETE_FILE = "Dosya Başarıyla Silindi";
         public static string FILE_NOT_EXISTS = "Dosya Mevcut Değil";
 
         public static string ListPaged = "List was paginated successfully.";
+
+        public static string IMAGE_FORMAT_ERROR = "Yüklenecek resim jpg,png ve jpeg formatında olabilir.";
     }
 }

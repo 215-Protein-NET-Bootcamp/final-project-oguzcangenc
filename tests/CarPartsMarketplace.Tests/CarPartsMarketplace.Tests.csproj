@@ -9,6 +9,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="TestPhotos\png-test.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="TestPhotos\png-test.png">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="AutoFixture" Version="4.17.0" />
 		<PackageReference Include="FluentAssertions" Version="6.7.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
@@ -31,6 +43,25 @@
 		<ProjectReference Include="..\..\src\CarPartsMarketplace.Business\CarPartsMarketplace.Business.csproj" />
 		<ProjectReference Include="..\..\src\CarPartsMarketplace.Core\CarPartsMarketplace.Core.csproj" />
 		<ProjectReference Include="..\..\src\CarPartsMarketplace.Entities\CarPartsMarketplace.Entities.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\images\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="TestPhotos\file-size-test.jpg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="TestPhotos\jpeg-test.jpeg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="TestPhotos\jpg-test.jpg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="TestPhotos\test-csv-file.csv">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

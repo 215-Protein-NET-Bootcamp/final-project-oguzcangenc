@@ -5,7 +5,7 @@ namespace CarPartsMarketplace.Core.Utilities.FileHelper.Abstract
 {
     public interface IFileHelper
     {
-        Task<IDataResult<string>> UploadFileUpdate(IFormFile file);
+        Task<IDataResult<string>> UploadImageUpdate(IFormFile file);
         string SetProductImage(string currentImageUrl);
 
     }

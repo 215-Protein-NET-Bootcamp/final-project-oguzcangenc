@@ -38,4 +38,10 @@
     <Folder Include="logs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\images\295ebf42-d9e3-4ec7-809a-ffe538b74ccf.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
