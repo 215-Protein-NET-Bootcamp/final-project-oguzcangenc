@@ -74,7 +74,6 @@ namespace CarPartsMarketplace.Business.Services.Concrete
                 throw new MessageResultException(Messages.ADD_ERROR, ex);
             }
         }
-
         public override async Task<IResult> Update(int id, UpdateProductDto updateResource)
         {
             try
@@ -203,7 +202,6 @@ namespace CarPartsMarketplace.Business.Services.Concrete
             resource.CreatePaginationResponse(paginationFilter, paginationPerson.total, _relatePaginationUri, route);
             return resource;
         }
-
         public async Task<IResult> SellDirectProduct(int productId)
         {
             var product = await _productRepository.GetAsync(x => x.Id == productId);

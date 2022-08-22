@@ -7,15 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{093CF624-B4B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FDECD339-F4EC-42DA-AA0A-E917DD0E2A38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPartsMarketplace.Tests", "tests\CarPartsMarketplace.Tests\CarPartsMarketplace.Tests.csproj", "{2E17F87E-ECBD-4E58-9336-3545A4D999AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPartsMarketplace.Tests", "tests\CarPartsMarketplace.Tests\CarPartsMarketplace.Tests.csproj", "{2E17F87E-ECBD-4E58-9336-3545A4D999AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPartsMarketplace.API", "src\CarPartsMarketplace.API\CarPartsMarketplace.API.csproj", "{F567A856-438F-47AC-AA0E-0EB6B9E007AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPartsMarketplace.API", "src\CarPartsMarketplace.API\CarPartsMarketplace.API.csproj", "{F567A856-438F-47AC-AA0E-0EB6B9E007AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPartsMarketplace.Business", "src\CarPartsMarketplace.Business\CarPartsMarketplace.Business.csproj", "{BE5365EE-EA03-4C00-B655-B8B93FED06D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPartsMarketplace.Business", "src\CarPartsMarketplace.Business\CarPartsMarketplace.Business.csproj", "{BE5365EE-EA03-4C00-B655-B8B93FED06D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPartsMarketplace.Entities", "src\CarPartsMarketplace.Entities\CarPartsMarketplace.Entities.csproj", "{A9055F77-8E2F-4D08-876C-59F540560FD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPartsMarketplace.Entities", "src\CarPartsMarketplace.Entities\CarPartsMarketplace.Entities.csproj", "{A9055F77-8E2F-4D08-876C-59F540560FD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarPartsMarketplace.Data", "src\CarPartsMarketplace.Data\CarPartsMarketplace.Data.csproj", "{DEC8ACC1-080D-4CF3-8854-B793192227B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPartsMarketplace.Data", "src\CarPartsMarketplace.Data\CarPartsMarketplace.Data.csproj", "{DEC8ACC1-080D-4CF3-8854-B793192227B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarPartsMarketplace.Core", "src\CarPartsMarketplace.Core\CarPartsMarketplace.Core.csproj", "{BDBFC70E-9043-4728-B648-D287C2260A84}"
 EndProject
