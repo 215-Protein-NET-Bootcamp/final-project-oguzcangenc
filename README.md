@@ -12,7 +12,7 @@ Projenin tüm endpointlerine ait detaylı bilgiye online dokümantasyondan ulaş
 
 ---
 
-![Car Parts Marketplace API Docs.png](images/Car_Parts_Marketplace_API_Docs_(1).png)
+[![Car Parts Marketplace API Docs.png](images/Car_Parts_Marketplace_API_Docs_(1).png)](https://oguzcan-genc.gitbook.io/protein-api-documentation/)
 
 ## 🚀 Live Demo
 
@@ -20,7 +20,7 @@ Projeyi test etmek için aşağıdaki butona tıklayınız
 
 ---
 
-![Car Parts Marketplace API Demo.png](images/Car_Parts_Marketplace_API_Docs.png)
+[![Car Parts Marketplace API Demo.png](images/Car_Parts_Marketplace_API_Docs.png)](https://car-parts-marketplace.herokuapp.com/swagger/index.html)
 
 ## 🧪 Testler
 
